@@ -1,0 +1,3 @@
+[submodule "wx"]
+      path = wx
+      url = https://gitee.com/touchumind/wx.git
