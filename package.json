@@ -14,7 +14,9 @@
         "lint-staged:ts": "tslint --fix -c .tslintrc.json"
     },
     "lint-staged": {
-        "src/**/*.{ts,tsx}": ["lint-staged:ts"]
+        "src/**/*.{ts,tsx}": [
+            "lint-staged:ts"
+        ]
     },
     "pre-commit": "lint-staged",
     "devDependencies": {
@@ -24,5 +26,10 @@
         "tslint": "^5.8.0",
         "tslint-eslint-rules": "^4.1.1",
         "typescript": "^2.6.2"
+    },
+    "dependencies": {
+        "axios": "^0.17.1",
+        "json2xml": "^0.1.3",
+        "moment": "^2.20.1"
     }
 }
