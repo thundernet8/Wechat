@@ -8,4 +8,4 @@ export default interface IAppConfig {
         level: "error" | "debug" | "info";
         file: string;
     };
-};
+}
