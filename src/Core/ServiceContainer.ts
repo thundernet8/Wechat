@@ -10,7 +10,6 @@ export default abstract class ServiceContainer {
 
     public constructor(config: IAppConfig) {
         this.appConfig = config;
-        this.initServices();
     }
 
     public get appid() {
