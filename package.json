@@ -7,7 +7,7 @@
     "author": "WuXueqian <wuxueqian2010@hotmail.com>",
     "license": "MIT",
     "scripts": {
-        "build": "tsc",
+        "build": "rimraf lib && tsc",
         "lint": "npm run lint:ts",
         "lint:ts": "tslint -e node_modules typings -c .tslintrc.json src/**/*.tsx",
         "lint-staged": "lint-staged",
@@ -23,6 +23,7 @@
         "@types/node": "^8.5.7",
         "lint-staged": "^6.0.0",
         "pre-commit": "^1.2.2",
+        "rimraf": "^2.6.2",
         "tslint": "^5.8.0",
         "tslint-eslint-rules": "^4.1.1",
         "typescript": "^2.6.2"
