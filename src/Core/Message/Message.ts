@@ -1,30 +1,7 @@
 import * as json2xml from "json2xml";
 import MessageType from "../Enum/MessageType";
-import TextMessage from "./TextMessage";
 
 export default abstract class Message {
-    public static fromXML<T extends Message>(xmlBody: { [key: string]: string }) {
-        const { MsgId, MsgType, Content, FromUserName, ToUserName, CreateTime } = xmlBody;
-        switch (MsgType) {
-            case MessageType.TEXT:
-                return new TextMessage(
-                    MsgId,
-                    FromUserName,
-                    ToUserName,
-                    Content,
-                    parseInt(CreateTime, 10)
-                );
-            default:
-                return new TextMessage(
-                    MsgId,
-                    FromUserName,
-                    ToUserName,
-                    Content,
-                    parseInt(CreateTime, 10)
-                );
-        }
-    }
-
     protected constructor(
         id: string,
         type: MessageType,

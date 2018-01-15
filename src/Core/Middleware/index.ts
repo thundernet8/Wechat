@@ -7,9 +7,9 @@ function noop() {}
 
 export default function middleware(container: ServiceContainer, service: IServiceProvider) {
     switch (container.server) {
-        case "koa":
-            return expressMiddleware(container, service);
         case "express":
+            return expressMiddleware(container, service);
+        case "koa":
             return koaMiddleware(container, service);
         default:
             return noop;

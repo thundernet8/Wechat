@@ -5,6 +5,7 @@ import middleware from "../../Core/Middleware";
 import Response from "../../Core/Http/Response";
 import Message from "../../Core/Message/Message";
 import TextMessage from "../../Core/Message/TextMessage";
+import MessageHelper from "../../Core/Message/MessageHelper";
 
 /**
  * Msg Server Service Provider
@@ -27,7 +28,14 @@ export default class ServiceProvider implements IServiceProvider {
     }
 
     public async response() {
-        const originMsg = Message.fromXML(this.app.request.body.xml);
+        const resp = new Response();
+
+        const { body } = this.app.request;
+        if (!body || !body.xml) {
+            resp.body = "";
+            return resp;
+        }
+        const originMsg = MessageHelper.fromXML(this.app.request.body.xml);
         let respMsg;
         for (let i = 0; i < this.msgHandlers.length; i++) {
             const handler = this.msgHandlers[i];
@@ -37,7 +45,7 @@ export default class ServiceProvider implements IServiceProvider {
             }
             respMsg = result;
         }
-        const resp = new Response();
+
         if (respMsg) {
             if (resp instanceof Message) {
                 resp.body = resp.toXML();
