@@ -22,7 +22,7 @@ export default class Response {
     }
 
     public set body(body: string) {
-        this.body = body;
+        this._body = body;
     }
 
     public get body() {
