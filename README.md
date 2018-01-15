@@ -1,6 +1,6 @@
 ## Wechat
 
-Easy to use Wechat SKD for Node(Under dev)
+Easy to use Wechat SDK for Node(Under dev)
 
 ## Implements
 
