@@ -25,8 +25,9 @@ export default function koaMiddleware(container: ServiceContainer, service: ISer
                 } catch (error) {
                     throw error;
                 }
+            } else {
+                return next();
             }
-            return next();
         }
     };
 }
