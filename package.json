@@ -8,15 +8,14 @@
     "license": "MIT",
     "scripts": {
         "build": "rimraf lib && tsc",
+        "prepublish": "npm run build",
         "lint": "npm run lint:ts",
         "lint:ts": "tslint -e node_modules typings -c .tslintrc.json src/**/*.tsx",
         "lint-staged": "lint-staged",
         "lint-staged:ts": "tslint --fix -c .tslintrc.json"
     },
     "lint-staged": {
-        "src/**/*.{ts,tsx}": [
-            "lint-staged:ts"
-        ]
+        "src/**/*.{ts,tsx}": ["lint-staged:ts"]
     },
     "pre-commit": "lint-staged",
     "devDependencies": {
