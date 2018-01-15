@@ -1,5 +1,5 @@
-import * as json2xml from "json2xml";
 import MessageType from "../Enum/MessageType";
+import { renderXML } from "./MessageHelper";
 
 export default abstract class Message {
     protected constructor(
@@ -21,7 +21,7 @@ export default abstract class Message {
     /**
      * MsgId field of xml
      */
-    public id: string;
+    public id?: string;
 
     /**
      * MsgType of xml
@@ -46,15 +46,22 @@ export default abstract class Message {
     /**
      * Content field of xml
      */
-    public content: string;
+    public content: any;
 
-    protected abstract toPOJO();
+    protected toPOJO() {
+        return {
+            ToUserName: this.to,
+            FromUserName: this.from,
+            CreateTime: this.createTime,
+            MsgType: this.type
+        };
+    }
 
     public toJSON() {
         return JSON.stringify(this.toPOJO());
     }
 
     public toXML() {
-        return json2xml(this.toPOJO(), { header: false });
+        return renderXML(this.toPOJO());
     }
 }

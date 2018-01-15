@@ -1,6 +1,6 @@
 export default class Response {
     private _status: number = 200;
-    private _contentType: string = "text/xml";
+    private _contentType: string = "application/xml";
     private _body: string = "";
 
     public constructor() {}
