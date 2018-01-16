@@ -5,7 +5,7 @@ Easy to use Wechat SDK for Node(Under dev)
 ## Implements
 
 * 公众平台
-  * [x] 消息处理
+    * [x] 消息处理
 
 ## Usage
 
@@ -30,7 +30,9 @@ const mpServer = wx.getService("server");
 mpServer.handle(function handler(msg) {
     switch (msg.type) {
         case "text":
-            return "received: " + msg.content;
+            return "received: " + msg.content; // this will be a text reply
+            return new Wechat.Core.ImageMessage("http://www.example.com/image.png", "MediaId") // this will be a image reply
+
         ...
         default:
             return "" // no reply

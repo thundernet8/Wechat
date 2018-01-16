@@ -5,13 +5,23 @@ import MessageType from "../Enum/MessageType";
  * 普通文本消息
  */
 export default class TextMessage extends Message {
-    public constructor(id: string, from: string, to: string, content: string, createTime: number) {
-        super(id, MessageType.TEXT, from, to, content, createTime);
+    private _content: string;
+
+    public constructor(content: string) {
+        super(MessageType.TEXT);
+        this._content = content;
+    }
+
+    /**
+     * 文本消息内容
+     */
+    public get content() {
+        return this._content;
     }
 
     protected toPOJO() {
         return Object.assign({}, super.toPOJO(), {
-            Content: this.content
+            Content: this._content
         });
     }
 }
