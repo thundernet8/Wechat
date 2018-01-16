@@ -7,11 +7,20 @@ import MessageType from "../Enum/MessageType";
 export default class VideoMessage extends Message {
     private _thumbMediaId: string;
     private _mediaId: string;
+    private _title: string; // 仅开发者回复此类消息时可用
+    private _description: string; // 仅开发者回复此类消息时可用
 
-    public constructor(thumbMediaId: string, mediaId: string) {
+    public constructor(
+        thumbMediaId: string,
+        mediaId: string,
+        title?: string,
+        description?: string
+    ) {
         super(MessageType.VIDEO);
         this._thumbMediaId = thumbMediaId;
         this._mediaId = mediaId;
+        this._title = title || "";
+        this._description = description || "";
     }
 
     /**
@@ -31,7 +40,9 @@ export default class VideoMessage extends Message {
     protected toPOJO() {
         return Object.assign({}, super.toPOJO(), {
             ThumbMediaId: this._thumbMediaId,
-            MediaId: this._mediaId
+            MediaId: this._mediaId,
+            Title: this._title,
+            Description: this._description
         });
     }
 }
