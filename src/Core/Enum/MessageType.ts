@@ -3,8 +3,8 @@ enum MessageType {
     IMAGE = "image",
     VOICE = "voice",
     VIDEO = "video",
-    MUSIC = "music",
-    NEWS = "news",
+    MUSIC = "music", // 仅开发者回复
+    NEWS = "news", // 仅开发者回复
     SHORT_VIDEO = "shortvideo",
     LOCATION = "location",
     LINK = "link",

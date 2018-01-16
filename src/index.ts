@@ -2,10 +2,10 @@ import BasicService from "./BasicService";
 import OfficialAccount from "./OfficialAccount";
 import OpenPlatform from "./OpenPlatform";
 import Payment from "./Payment";
-import Message from "./Core/Message";
+import Reply from "./Core/Reply";
 
 const Core = {
-    ...Message
+    ...Reply
 };
 
 const Wechat = {

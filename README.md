@@ -31,7 +31,7 @@ mpServer.handle(function handler(msg) {
     switch (msg.type) {
         case "text":
             return "received: " + msg.content; // this will be a text reply
-            return new Wechat.Core.ImageMessage("http://www.example.com/image.png", "MediaId") // this will be a image reply
+            return new Wechat.Core.ImageReply("MediaId") // this will be a image reply
 
         ...
         default:
