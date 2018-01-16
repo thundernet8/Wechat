@@ -55,58 +55,76 @@ export default abstract class Message {
         ].join("")
     );
 
-    protected constructor(
-        id: string,
-        type: MessageType,
-        from: string,
-        to: string,
-        content: string,
-        createTime: number
-    ) {
-        this.id = id;
-        this.type = type;
-        this.from = from;
-        this.to = to;
-        this.content = content;
-        this.createTime = createTime;
+    private _id: string;
+    private _type: MessageType = MessageType.TEXT;
+    private _to: string;
+    private _from: string;
+    private _createTime: number;
+
+    protected constructor(type: MessageType) {
+        this._type = type;
     }
 
     /**
-     * MsgId field of xml
+     * 消息id，64位整型
      */
-    public id?: string;
+    public get id() {
+        return this._id;
+    }
+
+    public set id(id: string) {
+        this._id = id;
+    }
 
     /**
      * MsgType of xml
      */
-    public type: MessageType = MessageType.TEXT;
+    public get type() {
+        return this._type;
+    }
 
     /**
-     * ToUserName field of xml
+     * 开发者微信号(接收消息时)/对应用户的OpenID(发送消息时)
      */
-    public to: string;
+    public get to() {
+        return this._to;
+    }
+
+    public set to(to: string) {
+        this._to = to;
+    }
 
     /**
-     * FromUserName field of xml
+     * 对应用户的OpenID(接收消息时)/开发者微信号(发送消息时)
      */
-    public from: string;
+    public get from() {
+        return this._from;
+    }
+
+    public set from(from: string) {
+        this._from = from;
+    }
 
     /**
-     * CreateTime field of xml(string)
+     * 消息创建时间 （整型）
      */
-    public createTime: number;
+    public get createTime() {
+        return this._createTime;
+    }
 
     /**
-     * Content field of xml
+     * @param createTime timestamp in seconds
      */
-    public content: any;
+    public set createTime(createTime: number) {
+        this._createTime = createTime;
+    }
 
     protected toPOJO(): any {
         return {
-            ToUserName: this.to,
-            FromUserName: this.from,
-            CreateTime: this.createTime,
-            MsgType: this.type
+            ToUserName: this._to,
+            FromUserName: this._from,
+            CreateTime: this._createTime,
+            MsgType: this._type
         };
     }
 

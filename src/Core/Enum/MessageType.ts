@@ -13,7 +13,8 @@ enum MessageType {
     // FILE = "file",
     // TEXT_CARD = "textcard",
     // TRANSFER = "transfer",
-    EVENT = "event"
+    EVENT = "event",
+    UNKNOWN = "unknown"
 }
 
 export default MessageType;

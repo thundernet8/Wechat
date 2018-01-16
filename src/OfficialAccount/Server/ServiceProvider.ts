@@ -47,17 +47,16 @@ export default class ServiceProvider implements IServiceProvider {
         }
 
         if (respMsg) {
-            if (resp instanceof Message) {
-                resp.body = resp.toXML();
+            let reply: Message;
+            if (respMsg instanceof Message) {
+                reply = respMsg;
             } else {
-                resp.body = new TextMessage(
-                    "",
-                    originMsg.to,
-                    originMsg.from,
-                    respMsg,
-                    Math.ceil(moment.now().valueOf() / 1000)
-                ).toXML();
+                reply = new TextMessage(respMsg);
             }
+            reply.createTime = Math.ceil(moment.now().valueOf() / 1000);
+            reply.from = originMsg.to;
+            reply.to = originMsg.from;
+            resp.body = reply.toXML();
         } else {
             resp.body = "";
         }
