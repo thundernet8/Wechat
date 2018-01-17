@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as https from "https";
 import * as fs from "fs";
+import * as FormData from "form-data";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
 export default class HttpClient {
@@ -78,17 +79,18 @@ export default class HttpClient {
         if (!fs.existsSync(filePath)) {
             return Promise.reject(`File on path: ${filePath} is not exist`);
         }
-        const { size } = fs.statSync(filePath);
-        const headers = {
-            "Content-Type": "multipart/form-data",
-            "Content-Length": size
-        };
 
         const rs = fs.createReadStream(filePath);
-        data = Object.assign({}, data || {}, {
-            media: rs
+        rs.on("error", error => {
+            return Promise.reject(error.message || error.toString());
+        });
+        data = data || {};
+        const formData = new FormData();
+        formData.append("media", rs);
+        Object.keys(data).forEach(key => {
+            formData.append(key, data![key]);
         });
 
-        return this._request("POST", endpoint, data, headers);
+        return this._request("POST", endpoint, formData, formData.getHeaders());
     }
 }
