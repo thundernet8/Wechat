@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as https from "https";
+import * as fs from "fs";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
 export default class HttpClient {
@@ -30,7 +31,8 @@ export default class HttpClient {
     private _request<T>(
         method: IHttpMethod,
         endpoint: string,
-        params: { [key: string]: any } | null
+        params: { [key: string]: any } | null,
+        headers?: { [key: string]: string | number }
     ): Promise<T> {
         if (!endpoint.startsWith("/")) {
             endpoint = "/" + endpoint;
@@ -39,6 +41,7 @@ export default class HttpClient {
             .request({
                 url: endpoint,
                 method,
+                headers: headers || {},
                 params: method.toUpperCase() === "GET" ? params : null,
                 data: method.toUpperCase() !== "GET" ? params : null,
                 validateStatus: function(status) {
@@ -59,5 +62,27 @@ export default class HttpClient {
 
     public httpPost<T>(endpoint: string, params: { [key: string]: any } | null): Promise<T> {
         return this._request("POST", endpoint, params);
+    }
+
+    public httpFormUpload<T>(
+        endpoint: string,
+        filePath: string,
+        data?: { [key: string]: any }
+    ): Promise<T> {
+        if (!fs.existsSync(filePath)) {
+            return Promise.reject(`File on path: ${filePath} is not exist`);
+        }
+        const { size } = fs.statSync(filePath);
+        const headers = {
+            "Content-Type": "multipart/form-data",
+            "Content-Length": size
+        };
+
+        const rs = fs.createReadStream(filePath);
+        data = Object.assign({}, data || {}, {
+            media: rs
+        });
+
+        return this._request("POST", endpoint, data, headers);
     }
 }

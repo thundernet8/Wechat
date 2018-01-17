@@ -3,6 +3,7 @@ import AccessToken from "./AccessToken";
 import HttpClient from "./Http/HttpClient";
 import { WX_API_BASE } from "./Constants";
 import { addUrlQuery } from "./Utils/Url";
+import MediaType from "./Enum/MediaType";
 
 /**
  * Base Service Client
@@ -29,6 +30,7 @@ export default class ServiceClient {
             .getToken()
             .then(accessToken => {
                 // TODO log
+                console.log(`${new Date().toISOString()}: Get access token ${accessToken}`);
                 return accessToken;
             })
             .catch(error => {
@@ -48,6 +50,18 @@ export default class ServiceClient {
         return this.getAccessToken().then(accessToken => {
             endpoint = addUrlQuery(endpoint, { access_token: accessToken });
             return this._httpClient.httpPost<T>(endpoint, data);
+        });
+    }
+
+    public httpFormUpload<T>(
+        endpoint: string,
+        filePath: string,
+        type: MediaType,
+        data?: { [key: string]: any }
+    ): Promise<T> {
+        return this.getAccessToken().then(accessToken => {
+            endpoint = addUrlQuery(endpoint, { access_token: accessToken, type });
+            return this._httpClient.httpFormUpload<T>(endpoint, filePath, data);
         });
     }
 }
