@@ -27,7 +27,7 @@ const wx = new Wechat.OfficialAccount({
 });
 const mpServer = wx.getService("server");
 
-mpServer.handle(function handler(msg) {
+mpServer.handle(async function handler(msg) {
     switch (msg.type) {
         case "text":
             return "received: " + msg.content; // this will be a text reply
