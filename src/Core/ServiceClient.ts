@@ -20,6 +20,10 @@ export default class ServiceClient {
         });
     }
 
+    protected get app() {
+        return this._app;
+    }
+
     private getAccessToken(): Promise<string> {
         return this._accessToken
             .getToken()
@@ -33,7 +37,7 @@ export default class ServiceClient {
             });
     }
 
-    public httpGet<T>(endpoint: string, params: { [key: string]: any }): Promise<T> {
+    public httpGet<T>(endpoint: string, params?: { [key: string]: any }): Promise<T> {
         return this.getAccessToken().then(accessToken => {
             params = Object.assign({}, params || {}, { access_token: accessToken });
             return this._httpClient.httpGet<T>(endpoint, params);

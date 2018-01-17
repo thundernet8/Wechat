@@ -1,5 +1,5 @@
 import axios from "axios";
-import https from "https";
+import * as https from "https";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
 export default class HttpClient {

@@ -1,10 +1,11 @@
 import { IncomingMessage } from "http";
 import IAppConfig from "./Interface/IAppConfig";
 import IServiceProvider, { IServiceProviderClass } from "./Interface/IServiceProvider";
+import ServiceClient from "./ServiceClient";
 
 export default abstract class ServiceContainer {
     private appConfig: IAppConfig;
-    private serviceClients: { [key: string]: IServiceProvider } = {};
+    private serviceClients: { [key: string]: ServiceClient } = {};
     private _request: IncomingMessage & { body: any };
     protected providers: IServiceProviderClass[] = [];
 
@@ -40,7 +41,7 @@ export default abstract class ServiceContainer {
         });
     }
 
-    public setService(name: string, serviceClient: IServiceProvider) {
+    public setService(name: string, serviceClient: ServiceClient) {
         this.serviceClients[name] = serviceClient;
     }
 

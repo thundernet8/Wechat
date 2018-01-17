@@ -1,16 +1,16 @@
 import expressMiddleware from "./ExpressAdapter";
 import koaMiddleware from "./KoaAdapter";
 import ServiceContainer from "../ServiceContainer";
-import IServiceProvider from "../Interface/IServiceProvider";
+import ServiceClient from "../ServiceClient";
 
 function noop() {}
 
-export default function middleware(container: ServiceContainer, service: IServiceProvider) {
+export default function middleware(container: ServiceContainer, client: ServiceClient) {
     switch (container.server) {
         case "express":
-            return expressMiddleware(container, service);
+            return expressMiddleware(container, client);
         case "koa":
-            return koaMiddleware(container, service);
+            return koaMiddleware(container, client);
         default:
             return noop;
     }
