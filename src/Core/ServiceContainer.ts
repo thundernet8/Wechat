@@ -27,6 +27,9 @@ export default abstract class ServiceContainer {
         return this.appConfig.token;
     }
 
+    /**
+     * Server framework type(koa/express)
+     */
     public get server() {
         return this.appConfig.server;
     }
@@ -52,6 +55,9 @@ export default abstract class ServiceContainer {
         this._request = request;
     }
 
+    /**
+     * Http request from wechat server
+     */
     public get request() {
         return this._request;
     }
