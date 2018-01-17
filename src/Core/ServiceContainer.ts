@@ -1,4 +1,3 @@
-import { IncomingMessage } from "http";
 import IAppConfig from "./Interface/IAppConfig";
 import IServiceProvider, { IServiceProviderClass } from "./Interface/IServiceProvider";
 import ServiceClient from "./ServiceClient";
@@ -6,7 +5,7 @@ import ServiceClient from "./ServiceClient";
 export default abstract class ServiceContainer {
     private appConfig: IAppConfig;
     private serviceClients: { [key: string]: ServiceClient } = {};
-    private _request: IncomingMessage & { body: any };
+    private _request: any;
     protected providers: IServiceProviderClass[] = [];
 
     public constructor(config: IAppConfig) {
@@ -52,7 +51,7 @@ export default abstract class ServiceContainer {
         throw new Error(`Service {${name}} is not existed or registered`);
     }
 
-    public set request(request: IncomingMessage & { body: any }) {
+    public set request(request) {
         this._request = request;
     }
 

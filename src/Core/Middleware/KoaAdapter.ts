@@ -13,7 +13,7 @@ export default function koaMiddleware(container: ServiceContainer, client: any) 
             ctx.status = 200;
             ctx.body = ctx.query.echostr;
         } else {
-            container.request = ctx.req;
+            container.request = ctx.request;
             if (client.response) {
                 try {
                     const resp = await client.response();
