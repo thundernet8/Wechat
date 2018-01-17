@@ -52,6 +52,12 @@ export default class HttpClient {
                 if (resp.status >= 400) {
                     throw new Error(resp.data);
                 }
+                if (resp.data) {
+                    const { errcode, errmsg } = resp.data;
+                    if (errcode) {
+                        throw new Error(errmsg);
+                    }
+                }
                 return resp.data as T;
             });
     }
