@@ -1,9 +1,10 @@
 import validate from "./Validate";
 import ServiceContainer from "../ServiceContainer";
+import * as xmlParser from "koa-xml-body";
 // import ServiceClient from "../ServiceClient";
 
 export default function koaMiddleware(container: ServiceContainer, client: any) {
-    return async (ctx, next) => {
+    const wxMiddleware = async (ctx, next) => {
         const validateResult = validate(ctx.query, container.token);
         if (!validateResult) {
             throw new Error("Validate request failed");
@@ -30,4 +31,6 @@ export default function koaMiddleware(container: ServiceContainer, client: any) 
             }
         }
     };
+
+    return [xmlParser(), wxMiddleware];
 }

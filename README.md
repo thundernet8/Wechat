@@ -62,8 +62,10 @@ mpServer.handle(async function handler(msg) {
     }
 });
 
-app.use(xmlParser()); // must add a xml parser middleware
-app.use(mpServer.middleware);
+// inject middlewares
+mpServer.connect(app);
+// or inject to specified path
+mpServer.connect(app, path);
 ```
 
 * 媒体上传
