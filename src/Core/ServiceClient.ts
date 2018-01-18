@@ -45,10 +45,10 @@ export default class ServiceClient {
         });
     }
 
-    public httpPost<T>(endpoint: string, data: { [key: string]: any }): Promise<T> {
+    public httpPost<T>(endpoint: string, data?: { [key: string]: any }): Promise<T> {
         return this.getAccessToken().then(accessToken => {
             endpoint = addUrlQuery(endpoint, { access_token: accessToken });
-            return this._httpClient.httpPost<T>(endpoint, data);
+            return this._httpClient.httpPost<T>(endpoint, data || {});
         });
     }
 
