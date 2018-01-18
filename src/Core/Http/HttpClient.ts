@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as https from "https";
 import * as fs from "fs";
-import * as FormData from "form-data";
+import * as path from "path";
+import * as formstream from "formstream";
 import * as qs from "querystring";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
@@ -52,7 +53,7 @@ export default class HttpClient {
             })
             .then(resp => {
                 // debug
-                console.log(`request ${endpoint} resp:`, resp);
+                console.log(`request ${endpoint} resp:`, resp.data);
                 if (resp.status >= 400) {
                     throw new Error(resp.data);
                 }
@@ -87,13 +88,19 @@ export default class HttpClient {
         rs.on("error", error => {
             return Promise.reject(error.message || error.toString());
         });
-        data = data || {};
-        const formData = new FormData();
-        formData.append("media", rs);
-        Object.keys(data).forEach(key => {
-            formData.append(key, data![key]);
-        });
 
-        return this._request("POST", endpoint, qs.stringify(formData), formData.getHeaders());
+        try {
+            const stat = fs.statSync(filePath);
+            data = data || {};
+            const form = formstream();
+            form.file("media", filePath, path.basename(filePath), stat.size);
+            Object.keys(data).forEach(key => {
+                form.field(key, data![key]);
+            });
+
+            return this._request("POST", endpoint, form, form.headers());
+        } catch (error) {
+            return Promise.reject(error.message || error.toString());
+        }
     }
 }

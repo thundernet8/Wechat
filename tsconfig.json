@@ -7,23 +7,11 @@
         "noUnusedParameters": true,
         "noUnusedLocals": false,
         "target": "es5",
-        "lib": [
-            "dom",
-            "es7",
-            "es2015"
-        ],
-        "typeRoots": [
-            "node_modules/@types",
-            "typings"
-        ],
+        "lib": ["es7", "es2015"],
+        "typeRoots": ["node_modules/@types", "typings"],
         "baseUrl": "./src",
         "outDir": "./lib",
         "allowJs": false
     },
-    "exclude": [
-        "node_modules",
-        "lib",
-        "wx",
-        "**/*.spec.ts?"
-    ]
+    "exclude": ["node_modules", "lib", "wx", "**/*.spec.ts?"]
 }
