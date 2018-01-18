@@ -13,10 +13,12 @@ export default class ServiceClient extends BaseServiceClient {
     private msgHandlers: ((msg: Message) => Promise<string | Message | false>)[] = [];
 
     /**
-     * Middleware for koa/express
+     * Inject necessary middlewares to Express/Koa app
+     * @param app Express/Koa app
+     * @param path route path
      */
-    public get middleware() {
-        return middleware(this.app, this);
+    public connect(app, path?: string) {
+        middleware(path || null, app, this.app, this);
     }
 
     public async response() {
@@ -27,7 +29,7 @@ export default class ServiceClient extends BaseServiceClient {
             resp.body = "";
             return resp;
         }
-        const originMsg = MessageHelper.fromXML(this.app.request.body.xml);
+        const originMsg = MessageHelper.fromXML(this.app.server === "koa" ? body.xml : body);
         let respMsg;
         for (let i = 0; i < this.msgHandlers.length; i++) {
             const handler = this.msgHandlers[i];
