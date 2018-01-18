@@ -48,6 +48,9 @@ export default class ServiceClient extends BaseServiceClient {
             reply.createTime = Math.ceil(moment.now().valueOf() / 1000);
             reply.from = originMsg.to;
             reply.to = originMsg.from;
+            // Debug
+            // TODO remove
+            console.log(reply.toXML());
             resp.body = reply.toXML();
         } else {
             resp.body = "";

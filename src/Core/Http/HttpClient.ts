@@ -3,7 +3,6 @@ import * as https from "https";
 import * as fs from "fs";
 import * as path from "path";
 import * as formstream from "formstream";
-import * as qs from "querystring";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
 export default class HttpClient {
