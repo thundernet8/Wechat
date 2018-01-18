@@ -2,6 +2,7 @@ import axios from "axios";
 import * as https from "https";
 import * as fs from "fs";
 import * as FormData from "form-data";
+import * as qs from "querystring";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
 
 export default class HttpClient {
@@ -32,7 +33,7 @@ export default class HttpClient {
     private _request<T>(
         method: IHttpMethod,
         endpoint: string,
-        params: { [key: string]: any } | null,
+        params: { [key: string]: any } | string | null,
         headers?: { [key: string]: string | number }
     ): Promise<T> {
         if (!endpoint.startsWith("/")) {
@@ -50,6 +51,8 @@ export default class HttpClient {
                 }
             })
             .then(resp => {
+                // debug
+                console.log(`request ${endpoint} resp:`, resp);
                 if (resp.status >= 400) {
                     throw new Error(resp.data);
                 }
@@ -91,6 +94,6 @@ export default class HttpClient {
             formData.append(key, data![key]);
         });
 
-        return this._request("POST", endpoint, formData, formData.getHeaders());
+        return this._request("POST", endpoint, qs.stringify(formData), formData.getHeaders());
     }
 }

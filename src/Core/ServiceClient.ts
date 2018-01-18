@@ -30,7 +30,6 @@ export default class ServiceClient {
             .getToken()
             .then(accessToken => {
                 // TODO log
-                console.log(`${new Date().toISOString()}: Get access token ${accessToken}`);
                 return accessToken;
             })
             .catch(error => {
