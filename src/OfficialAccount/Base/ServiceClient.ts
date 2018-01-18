@@ -18,7 +18,7 @@ export default class ServiceClient extends BaseServiceClient {
      * 公众号调用或第三方平台帮公众号调用对公众号的所有api调用（包括第三方帮其调用）次数进行清零
      * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433744592
      */
-    public clearQuota(): Promise<{ errcode: number; errmsg: string }> {
+    public clearQuota(): Promise<string> {
         return this.httpPost("/cgi-bin/clear_quota", { appid: this.app.appid });
     }
 }
