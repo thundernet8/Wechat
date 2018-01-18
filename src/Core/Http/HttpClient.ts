@@ -60,6 +60,8 @@ export default class HttpClient {
                     const { errcode, errmsg } = resp.data;
                     if (errcode) {
                         throw new Error(errmsg);
+                    } else if (errcode === 0) {
+                        return errmsg as T;
                     }
                 }
                 return resp.data as T;
