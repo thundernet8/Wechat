@@ -4,8 +4,11 @@
 enum EventType {
     SUBSCRIBE = "subscribe",
     UNSUBSCRIBE = "unsubscribe",
+    SCAN = "SCAN",
     LOCATION = "LOCATION",
-    VIEW = "VIEW"
+    CLICK = "CLICK",
+    VIEW = "VIEW",
+    UNKNOWN = "unknown"
 }
 
 export default EventType;

@@ -1,11 +1,11 @@
-import { IncomingMessage } from "http";
 import IAppConfig from "./Interface/IAppConfig";
 import IServiceProvider, { IServiceProviderClass } from "./Interface/IServiceProvider";
+import ServiceClient from "./ServiceClient";
 
 export default abstract class ServiceContainer {
     private appConfig: IAppConfig;
-    private serviceClients: { [key: string]: IServiceProvider } = {};
-    private _request: IncomingMessage & { body: any };
+    private serviceClients: { [key: string]: ServiceClient } = {};
+    private _request: any;
     protected providers: IServiceProviderClass[] = [];
 
     public constructor(config: IAppConfig) {
@@ -27,6 +27,9 @@ export default abstract class ServiceContainer {
         return this.appConfig.token;
     }
 
+    /**
+     * Server framework type(koa/express)
+     */
     public get server() {
         return this.appConfig.server;
     }
@@ -37,7 +40,7 @@ export default abstract class ServiceContainer {
         });
     }
 
-    public setService(name: string, serviceClient: IServiceProvider) {
+    public setService(name: string, serviceClient: ServiceClient) {
         this.serviceClients[name] = serviceClient;
     }
 
@@ -48,10 +51,13 @@ export default abstract class ServiceContainer {
         throw new Error(`Service {${name}} is not existed or registered`);
     }
 
-    public set request(request: IncomingMessage & { body: any }) {
+    public set request(request) {
         this._request = request;
     }
 
+    /**
+     * Http request from wechat server
+     */
     public get request() {
         return this._request;
     }

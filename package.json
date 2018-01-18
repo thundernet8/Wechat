@@ -21,7 +21,7 @@
     },
     "pre-commit": "lint-staged",
     "devDependencies": {
-        "@types/node": "^8.5.7",
+        "@types/node": "^9.3.0",
         "lint-staged": "^6.0.0",
         "pre-commit": "^1.2.2",
         "rimraf": "^2.6.2",
@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "axios": "^0.17.1",
+        "formstream": "^1.1.0",
         "lodash-template": "^1.0.0",
         "moment": "^2.20.1"
     }

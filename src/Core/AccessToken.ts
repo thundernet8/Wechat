@@ -40,6 +40,7 @@ export default abstract class AccessToken {
 
         return httpClient.httpGet<IAccessTokenResp>(endpoint, credentials).then(resp => {
             if (resp.access_token && resp.expires_in) {
+                console.log(`${new Date().toISOString()}: Get access token ${resp.access_token}`);
                 this.setToken(resp.access_token, resp.expires_in);
                 return resp.access_token;
             }

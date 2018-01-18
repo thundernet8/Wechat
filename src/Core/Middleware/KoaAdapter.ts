@@ -1,8 +1,8 @@
 import validate from "./Validate";
 import ServiceContainer from "../ServiceContainer";
-import IServiceProvider from "../Interface/IServiceProvider";
+// import ServiceClient from "../ServiceClient";
 
-export default function koaMiddleware(container: ServiceContainer, service: IServiceProvider) {
+export default function koaMiddleware(container: ServiceContainer, client: any) {
     return async (ctx, next) => {
         const validateResult = validate(ctx.query, container.token);
         if (!validateResult) {
@@ -14,9 +14,9 @@ export default function koaMiddleware(container: ServiceContainer, service: ISer
             ctx.body = ctx.query.echostr;
         } else {
             container.request = ctx.request;
-            if (service.response) {
+            if (client.response) {
                 try {
-                    const resp = await service.response();
+                    const resp = await client.response();
                     if (resp) {
                         ctx.status = resp.status || 200;
                         ctx.type = resp.contentType;
