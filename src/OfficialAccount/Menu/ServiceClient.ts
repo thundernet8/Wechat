@@ -1,5 +1,5 @@
 import BaseServiceClient from "../../Core/ServiceClient";
-import IMenu, { IMenuButton, IConditionalMenu } from "../Interface/IMenu";
+import IMenu, { IMenuButton, IConditionalMenu, IMenuConfig } from "../Interface/IMenu";
 
 /**
  * Implement methods of Menu management service
@@ -10,6 +10,13 @@ export default class ServiceClient extends BaseServiceClient {
      */
     public list(): Promise<IMenu> {
         return this.httpGet("/cgi-bin/menu/get");
+    }
+
+    /**
+     * 获取当前自定义菜单配置
+     */
+    public current(): Promise<IMenuConfig> {
+        return this.httpGet("/cgi-bin/get_current_selfmenu_info");
     }
 
     /**

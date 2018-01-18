@@ -83,6 +83,8 @@ mediaService.uploadThumb("thumb image file path");
 const menuService = wx.getService("menu");
 // 列出所有菜单
 menuService.list();
+// 获取当前自定义菜单配置
+menuService.current();
 // 创建自定义菜单
 menuService.create([
     {

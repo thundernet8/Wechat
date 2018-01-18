@@ -58,3 +58,11 @@ export interface IMenuRule {
     city: string;
     client_platform_type: number;
 }
+
+// 当前自定义菜单配置
+export interface IMenuConfig {
+    is_menu_open: number;
+    selfmenu_info: {
+        button: IMenuButton[];
+    };
+}
