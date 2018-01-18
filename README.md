@@ -11,7 +11,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 菜单操作（查询、创建、删除）
     * [ ] 二维码（创建临时、永久二维码，查看二维码 URL）
     * [ ] 分组操作（查询、创建、修改、移动用户到分组）
-    * [ ] 用户信息（查询用户基本信息、获取关注者列表）
+    * [x] 用户管理
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
     * [ ] 模版消息
@@ -116,4 +116,43 @@ menuService.createConditional([
 menuService.deleteConditional(menuId);
 // 测试个性化菜单匹配
 menuService.tryMatch(userId);
+```
+
+* 用户管理
+
+```typescript
+const userService = wx.getService("user");
+// 创建用户标签
+userService.createTag("tag name");
+// 获取用户标签列表
+userService.getTags();
+// 编辑用户标签
+userService.updateTag(123 /* tag id */, "tag name");
+// 删除用户标签
+userService.deleteTag(123 /* tag id */);
+// 获取标签下粉丝列表
+userService.getTagUserList(123 /* tag id */, "next openid");
+// 批量为用户打标签
+userService.tagUsers(123 /* tag id */, ["openid1", "openid2"]);
+// 批量为用户取消标签
+userService.untagUsers(123 /* tag id */, ["openid1", "openid2"]);
+// 获取用户的标签列表
+userService.getUserTags("openid");
+// 设置用户备注名
+userService.setRemark("openid", "remark");
+// 获取用户基本信息
+userService.getInfo("openid", "zh_CN");
+// 批量获取用户基本信息
+userService.batchGetInfo([
+    { openid: "openid1", lang: "zh_CN" },
+    { openid: "openid2", lang: "zh_CN" }
+]);
+// 获取用户列表
+userService.list("next openid");
+// 获取黑名单用户列表
+userService.blacklist("next openid");
+// 拉黑用户
+userService.drop(["openid1", "openid2"]);
+// 取消拉黑用户
+userService.recover(["openid1", "openid2"]);
 ```
