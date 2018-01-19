@@ -1,4 +1,5 @@
 import ServiceContainer from "../Core/ServiceContainer";
+import AutoReplyServiceProvider from "./AutoReply/ServiceProvider";
 import BaseServiceProvider from "./Base/ServiceProvider";
 import ServerServiceProvider from "./Server/ServiceProvider";
 import MenuServiceProvider from "./Menu/ServiceProvider";
@@ -13,6 +14,7 @@ export default class Application extends ServiceContainer {
     public constructor(config: IAppConfig) {
         super(config);
         this.providers = [
+            AutoReplyServiceProvider,
             BaseServiceProvider,
             ServerServiceProvider,
             MenuServiceProvider,
