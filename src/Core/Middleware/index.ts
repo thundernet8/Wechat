@@ -2,7 +2,6 @@ import expressMiddleware from "./ExpressAdapter";
 import koaMiddleware from "./KoaAdapter";
 import ServiceContainer from "../ServiceContainer";
 import ServiceClient from "../ServiceClient";
-import * as koaRoute from "koa-route";
 
 function noop() {}
 
@@ -20,25 +19,10 @@ export default function middleware(
 ) {
     switch (container.server) {
         case "express":
-            const middlewares1 = expressMiddleware(container, client);
-            if (path) {
-                app.use(path, ...middlewares1);
-            } else {
-                app.use(...middlewares1);
-            }
+            expressMiddleware(path, app, container, client);
             break;
         case "koa":
-            const middlewares2 = koaMiddleware(container, client);
-            app.use(middlewares2[0]);
-            if (path) {
-                middlewares2.slice(1).forEach(mw => {
-                    app.use(koaRoute.all(path, mw));
-                });
-            } else {
-                middlewares2.slice(1).forEach(mw => {
-                    app.use(mw);
-                });
-            }
+            koaMiddleware(path, app, container, client);
             break;
         default:
             return;

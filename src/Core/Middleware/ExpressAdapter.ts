@@ -2,7 +2,12 @@ import validate from "./Validate";
 import ServiceContainer from "../ServiceContainer";
 import * as xmlParser from "express-xml-bodyparser";
 
-export default function expressMiddleware(container: ServiceContainer, client: any) {
+export default function expressMiddleware(
+    path: string | null,
+    express,
+    container: ServiceContainer,
+    client: any
+) {
     const wxMiddleware = async (req, res, next) => {
         const validateResult = validate(req.query, container.token);
         if (!validateResult) {
@@ -31,5 +36,9 @@ export default function expressMiddleware(container: ServiceContainer, client: a
         }
     };
 
-    return [xmlParser(), wxMiddleware];
+    if (path) {
+        express.use(path, xmlParser(), wxMiddleware);
+    } else {
+        express.use(xmlParser(), wxMiddleware);
+    }
 }
