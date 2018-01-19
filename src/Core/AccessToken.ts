@@ -1,6 +1,5 @@
 import ICredentials from "./Interface/ICredentials";
 import HttpClient from "./Http/HttpClient";
-import { WX_API_BASE } from "./Constants";
 import IAccessTokenResp from "./Interface/IAccessTokenResp";
 
 export default abstract class AccessToken {
@@ -8,6 +7,8 @@ export default abstract class AccessToken {
      * Memory cache store
      */
     protected static store: { [key: string]: any } = {};
+
+    protected apiBase: string = "https://api.weixin.qq.com";
 
     constructor() {}
 
@@ -35,7 +36,7 @@ export default abstract class AccessToken {
         }
 
         const httpClient = new HttpClient({
-            baseUrl: WX_API_BASE
+            baseUrl: this.apiBase
         });
 
         return httpClient.httpGet<IAccessTokenResp>(endpoint, credentials).then(resp => {
