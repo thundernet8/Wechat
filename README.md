@@ -20,7 +20,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
     * [ ] 模版消息
     * [x] 短网址
-    * [ ] 语义查询
+    * [x] 语义查询
     * [x] 数据分析
     * [ ] 摇一摇
     * [ ] 辅助
@@ -253,6 +253,14 @@ deviceService.forceBind(openId, deviceId);
 deviceService.forceUnbind(openId, deviceId);
 // 通过openid获取用户绑定的设备
 deviceService.getBindDevice(openId);
+```
+
+* 语义查询
+
+```typescript
+const semanticService = wx.getService("semantic");
+// 语义理解查询
+semanticService.query(keyword, categories, optional?);
 ```
 
 * 数据分析
