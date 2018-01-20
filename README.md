@@ -207,9 +207,9 @@ commentService.unmarkElect(msgId, index, commentId);
 // 删除评论
 commentService.delete(msgId, index, commentId);
 // 回复评论
-commentService.delete(msgId, index, commentId, content);
+commentService.reply(msgId, index, commentId, content);
 // 删除回复
-commentService.delete(msgId, index, commentId);
+commentService.deleteReply(msgId, index, commentId);
 ```
 
 * 自动回复
