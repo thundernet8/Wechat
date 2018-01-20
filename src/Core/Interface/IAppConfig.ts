@@ -4,6 +4,7 @@ export default interface IAppConfig {
     token: string;
     aesKey?: string;
     server?: "express" | "koa";
+    deviceType?: string; // IOT required, 设备类型，目前为“公众账号原始 ID”
     log?: {
         level: "error" | "debug" | "info";
         file: string;

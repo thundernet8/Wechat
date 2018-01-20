@@ -41,6 +41,17 @@ export default abstract class ServiceContainer {
         return this.appConfig.cacher;
     }
 
+    /**
+     * Query other config
+     * @param key
+     */
+    public getConfig(key: string) {
+        if (this.appConfig[key]) {
+            return this.appConfig[key];
+        }
+        return null;
+    }
+
     protected initServices() {
         this.providers.forEach(provider => {
             new provider().register(this);

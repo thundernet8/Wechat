@@ -14,6 +14,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [ ] 分组操作（查询、创建、修改、移动用户到分组）
     * [x] 用户管理
     * [x] 评论管理
+    * [x] 设备管理 (IoT)
     * [x] 自动回复 (查询自动回复规则)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
@@ -212,12 +213,46 @@ commentService.reply(msgId, index, commentId, content);
 commentService.deleteReply(msgId, index, commentId);
 ```
 
-* 自动回复
+* 设备管理
 
 ```typescript
 const autoreplyService = wx.getService("autoreply");
 // 获取公众号的自动回复规则
 autoreplyService.current();
+```
+
+* 自动回复
+
+```typescript
+const deviceService = wx.getService("device");
+// 第三方发送消息给设备主人的微信终端，并最终送达设备
+deviceService.message(deviceId, openId, content);
+// 第三方主动发送设备状态消息给微信终端
+deviceService.statMessage(deviceId, openId, type, status);
+// 获取设备绑定openID
+deviceService.openId(deviceId);
+// 获取设备二维码
+deviceService.qrCode(deviceIds);
+// 验证二维码
+deviceService.verifyQrCode(ticket);
+// 获取 deviceid 和二维码
+deviceService.createId(productId);
+// 设备授权
+deviceService.authorize(devices, productId, opType);
+// 利用 deviceid 更新设备属性
+deviceService.update(devices);
+// 设备状态查询
+deviceService.stat(deviceId);
+// 设备绑定成功通知
+deviceService.bind(openId, deviceId, ticket);
+// 设备解绑成功通知
+deviceService.unbind(openId, deviceId, ticket);
+// 强制绑定用户和设备
+deviceService.forceBind(openId, deviceId);
+// 强制解绑用户和设备
+deviceService.forceUnbind(openId, deviceId);
+// 通过openid获取用户绑定的设备
+deviceService.getBindDevice(openId);
 ```
 
 * 数据分析
