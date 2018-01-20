@@ -235,7 +235,7 @@ commentService.reply(msgId, index, commentId, content);
 commentService.deleteReply(msgId, index, commentId);
 ```
 
-* 设备管理
+* 自动回复
 
 ```typescript
 const autoreplyService = wx.getService("autoreply");
@@ -243,25 +243,7 @@ const autoreplyService = wx.getService("autoreply");
 autoreplyService.current();
 ```
 
-* 门店管理
-
-```typescript
-const poiService = wx.getService("poi");
-// 查询门店信息
-poiService.getPOI(id);
-// 查询门店列表
-poiService.list(offset, limit);
-// 创建门店
-poiService.create(poi);
-// 修改门店服务信息
-poiService.update(id, poi);
-// 删除门店
-poiService.delete(id);
-// 获取门店类目表
-poiService.categories();
-```
-
-* 自动回复
+* 设备管理
 
 ```typescript
 const deviceService = wx.getService("device");
@@ -293,6 +275,24 @@ deviceService.forceBind(openId, deviceId);
 deviceService.forceUnbind(openId, deviceId);
 // 通过openid获取用户绑定的设备
 deviceService.getBindDevice(openId);
+```
+
+* 门店管理
+
+```typescript
+const poiService = wx.getService("poi");
+// 查询门店信息
+poiService.getPOI(id);
+// 查询门店列表
+poiService.list(offset, limit);
+// 创建门店
+poiService.create(poi);
+// 修改门店服务信息
+poiService.update(id, poi);
+// 删除门店
+poiService.delete(id);
+// 获取门店类目表
+poiService.categories();
 ```
 
 * 语义查询
