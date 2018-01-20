@@ -9,9 +9,12 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 媒体管理(临时素材)
     * [ ] 素材管理(永久素材)
     * [x] 菜单操作（查询、创建、删除）
-    * [ ] 二维码（创建临时、永久二维码，查看二维码 URL）
+    * [x] 二维码（创建临时、永久二维码，查看二维码 URL）
+    * [x] 短网址
     * [ ] 分组操作（查询、创建、修改、移动用户到分组）
     * [x] 用户管理
+    * [x] 评论管理
+    * [x] 自动回复 (查询自动回复规则)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
     * [ ] 模版消息
@@ -120,6 +123,26 @@ menuService.deleteConditional(menuId);
 menuService.tryMatch(userId);
 ```
 
+* 二维码
+
+```typescript
+const qrcodeService = wx.getService("qrcode");
+// 创建永久二维码
+qrcodeService.forever("your scene");
+// 创建临时二维码
+qrcodeService.temporary("your scene", 3600 /* expireSeconds */);
+// 通过ticket换取二维码
+qrcodeService.url("ticket");
+```
+
+* 短网址
+
+```typescript
+const urlService = wx.getService("url");
+// 长链接转短链接
+urlService.shorten("your long url");
+```
+
 * 用户管理
 
 ```typescript
@@ -157,4 +180,44 @@ userService.blacklist("next openid");
 userService.drop(["openid1", "openid2"]);
 // 取消拉黑用户
 userService.recover(["openid1", "openid2"]);
+```
+
+* 评论管理
+
+```typescript
+const commentService = wx.getService("comment");
+// 打开已群发文章评论
+commentService.open(msgId, index);
+// 关闭已群发文章评论
+commentService.close(msgId, index);
+// 查看指定文章的评论数据
+commentService.list(msgId, index, begin, count, type);
+// 将评论标记精选
+commentService.markElect(msgId, index, commentId);
+// 将评论取消精选
+commentService.unmarkElect(msgId, index, commentId);
+// 删除评论
+commentService.delete(msgId, index, commentId);
+// 回复评论
+commentService.delete(msgId, index, commentId, content);
+// 删除回复
+commentService.delete(msgId, index, commentId);
+```
+
+* 自动回复
+
+```typescript
+const autoreplyService = wx.getService("autoreply");
+// 获取公众号的自动回复规则
+autoreplyService.current();
+```
+
+* 辅助
+
+```typescript
+const baseService = wx.getService("base");
+// 获取微信服务器IP列表
+baseService.getValidIps();
+// API限制数量清0(谨慎调用)
+baseService.clearQuota();
 ```
