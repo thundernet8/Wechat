@@ -147,9 +147,22 @@ qrcodeService.url("ticket");
 * 模板消息
 
 ```typescript
-const urlService = wx.getService("url");
-// 长链接转短链接
-urlService.shorten("your long url");
+const templatemessageService = wx.getService("templatemessage");
+// 设置所属行业
+templatemessageService.setIndustry(primaryIndustry, secondaryIndustry);
+
+// 获取设置的行业信息
+templatemessageService.getIndustry();
+// 获得模板ID
+templatemessageService.addTemplate(shortId);
+// 获取模板列表
+templatemessageService.getPrivateTemplates();
+// 删除模板
+templatemessageService.deletePrivateTemplate(templateId);
+// 发送模板消息
+templatemessageService.send(data);
+// 一次性订阅消息
+templatemessageService.sendSubscription(data);
 ```
 
 * 短网址
