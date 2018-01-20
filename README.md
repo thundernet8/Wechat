@@ -56,9 +56,9 @@ cacher: {
 <details>
     <summary>消息处理</summary>
     <p>
+
     ```typescript
     import * as Koa from "koa";
-
     const app = new Koa();
     const wx = ...
     const mpServer = wx.getService("server");
@@ -80,8 +80,8 @@ cacher: {
     mpServer.connect(app);
     // or inject to specified path
     mpServer.connect(app, path);
-
     ````
+
     </p>
 
 </details>
