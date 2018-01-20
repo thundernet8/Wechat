@@ -1,9 +1,14 @@
 import validate from "./Validate";
 import ServiceContainer from "../ServiceContainer";
 import * as xmlParser from "koa-xml-body";
-// import ServiceClient from "../ServiceClient";
+import * as koaRoute from "koa-route";
 
-export default function koaMiddleware(container: ServiceContainer, client: any) {
+export default function koaMiddleware(
+    path: string | null,
+    koa,
+    container: ServiceContainer,
+    client: any
+) {
     const wxMiddleware = async (ctx, next) => {
         const validateResult = validate(ctx.query, container.token);
         if (!validateResult) {
@@ -27,10 +32,19 @@ export default function koaMiddleware(container: ServiceContainer, client: any) 
                     throw error;
                 }
             } else {
-                return next();
+                if (typeof next === "function") {
+                    return next();
+                }
+                ctx.status = 200;
+                ctx.body = "";
             }
         }
     };
 
-    return [xmlParser(), wxMiddleware];
+    koa.use(xmlParser());
+    if (path) {
+        koa.use(koaRoute.all(path, wxMiddleware));
+    } else {
+        koa.use(wxMiddleware);
+    }
 }
