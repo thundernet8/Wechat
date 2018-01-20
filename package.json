@@ -1,6 +1,6 @@
 {
     "name": "wechat-one",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Easy to use Wechat SDK for Node",
     "main": "lib/index.js",
     "repository": "git@github.com:thundernet8/Wechat.git",
