@@ -18,7 +18,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 自动回复 (查询自动回复规则)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
-    * [ ] 模版消息
+    * [x] 模版消息
     * [x] 短网址
     * [x] 语义查询
     * [x] 数据分析
@@ -142,6 +142,14 @@ qrcodeService.forever("your scene");
 qrcodeService.temporary("your scene", 3600 /* expireSeconds */);
 // 通过ticket换取二维码
 qrcodeService.url("ticket");
+```
+
+* 模板消息
+
+```typescript
+const urlService = wx.getService("url");
+// 长链接转短链接
+urlService.shorten("your long url");
 ```
 
 * 短网址
