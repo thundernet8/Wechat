@@ -55,6 +55,7 @@ cacher: {
 
 <details>
     <summary>消息处理</summary>
+    <p>
     ```typescript
     import * as Koa from "koa";
 
@@ -81,6 +82,7 @@ cacher: {
     mpServer.connect(app, path);
 
     ````
+    </p>
 
 </details>
 
