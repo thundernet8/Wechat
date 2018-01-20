@@ -6,6 +6,12 @@ import { ISemanticQueryResp } from "../Interface/ISemantic";
  * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241
  */
 export default class ServiceClient extends BaseServiceClient {
+    /**
+     * 语义理解查询
+     * @param keyword
+     * @param categories
+     * @param optional
+     */
     public query(keyword: string, categories: string, optional?: { [key: string]: any }) {
         const data = Object.assign(
             {
