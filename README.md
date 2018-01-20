@@ -20,7 +20,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [ ] 模版消息
     * [x] 短网址
     * [ ] 语义查询
-    * [ ] 数据分析
+    * [x] 数据分析
     * [ ] 摇一摇
     * [ ] 辅助
         * [x] API Limit 清理
@@ -207,9 +207,9 @@ commentService.unmarkElect(msgId, index, commentId);
 // 删除评论
 commentService.delete(msgId, index, commentId);
 // 回复评论
-commentService.delete(msgId, index, commentId, content);
+commentService.reply(msgId, index, commentId, content);
 // 删除回复
-commentService.delete(msgId, index, commentId);
+commentService.deleteReply(msgId, index, commentId);
 ```
 
 * 自动回复
@@ -218,6 +218,54 @@ commentService.delete(msgId, index, commentId);
 const autoreplyService = wx.getService("autoreply");
 // 获取公众号的自动回复规则
 autoreplyService.current();
+```
+
+* 数据分析
+
+```typescript
+const datacubeService = wx.getService("datacube");
+// 获取用户增减数据
+datacubeService.userSummary(from, to);
+// 获取累计用户数据
+datacubeService.userCumulate(from, to);
+// 获取图文群发每日数据
+datacubeService.articleSummary(from, to);
+// 获取图文群发总数据
+datacubeService.articleTotal(from, to);
+// 获取图文阅读统计数据
+datacubeService.userReadSummary(from, to);
+// 获取图文阅读统计分时数据
+datacubeService.userReadHourly(from, to);
+// 获取图文分享转发数据
+datacubeService.userShareSummary(from, to);
+// 获取图文分享转发分时数据
+datacubeService.userShareHourly(from, to);
+// 获取消息发送概况数据
+datacubeService.upstreamMessageSummary(from, to);
+// 获取消息发送分时数据
+datacubeService.upstreamMessageHourly(from, to);
+// 获取消息发送周数据
+datacubeService.upstreamMessageWeekly(from, to);
+// 获取消息发送月数据
+datacubeService.upstreamMessageMonthly(from, to);
+// 获取消息发送分布数据
+datacubeService.upstreamMessageDistSummary(from, to);
+// 获取消息发送分布周数据
+datacubeService.upstreamMessageDistWeekly(from, to);
+// 获取消息发送分布月数据
+datacubeService.upstreamMessageDistMonthly(from, to);
+// 获取接口分析数据
+datacubeService.interfaceSummary(from, to);
+// 获取接口分析分时数据
+datacubeService.interfaceSummaryHourly(from, to);
+// 拉取卡券概况数据接口
+datacubeService.cardSummary(from, to, condSource);
+// 获取免费券数据接口
+datacubeService.freeCardSummary(from, to, condSource, cardId);
+// 拉取会员卡数据接口
+datacubeService.memberCardSummary(from, to, condSource);
+// 拉取单张会员卡数据接口
+datacubeService.memberCardDetail(from, to, cardId);
 ```
 
 * 辅助
