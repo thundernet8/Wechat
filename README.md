@@ -53,7 +53,7 @@ cacher: {
 
 * 消息处理
 
-`````typescript
+```typescript
 import * as Koa from "koa";
 
 const app = new Koa();
@@ -66,9 +66,9 @@ mpServer.handle(async function handler(msg) {
             return "received: " + msg.content; // this will be a text reply
             return new Wechat.Core.ImageReply("MediaId") // this will be a image reply
 
-            ...
-            default:
-                return "" // no reply
+        ...
+        default:
+            return "" // no reply
     }
 
 });
@@ -77,7 +77,7 @@ mpServer.handle(async function handler(msg) {
 mpServer.connect(app);
 // or inject to specified path
 mpServer.connect(app, path);
-````
+```
 
 * 媒体上传
 
@@ -88,7 +88,7 @@ mediaService.uploadImage("image file path");
 mediaService.uploadVoice("voice file path");
 mediaService.uploadVideo("video file path");
 mediaService.uploadThumb("thumb image file path");
-`````
+```
 
 * 菜单操作
 
