@@ -15,6 +15,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 用户管理
     * [x] 评论管理
     * [x] 设备管理 (IoT)
+    * [x] 门店管理
     * [x] 自动回复 (查询自动回复规则)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
@@ -240,6 +241,24 @@ commentService.deleteReply(msgId, index, commentId);
 const autoreplyService = wx.getService("autoreply");
 // 获取公众号的自动回复规则
 autoreplyService.current();
+```
+
+* 门店管理
+
+```typescript
+const poiService = wx.getService("poi");
+// 查询门店信息
+poiService.getPOI(id);
+// 查询门店列表
+poiService.list(offset, limit);
+// 创建门店
+poiService.create(poi);
+// 修改门店服务信息
+poiService.update(id, poi);
+// 删除门店
+poiService.delete(id);
+// 获取门店类目表
+poiService.categories();
 ```
 
 * 自动回复
