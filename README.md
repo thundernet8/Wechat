@@ -15,12 +15,13 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 用户管理
     * [x] 评论管理
     * [x] 设备管理 (IoT)
+    * [x] 门店管理
     * [x] 自动回复 (查询自动回复规则)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
-    * [ ] 模版消息
+    * [x] 模版消息
     * [x] 短网址
-    * [ ] 语义查询
+    * [x] 语义查询
     * [x] 数据分析
     * [ ] 摇一摇
     * [ ] 辅助
@@ -144,6 +145,27 @@ qrcodeService.temporary("your scene", 3600 /* expireSeconds */);
 qrcodeService.url("ticket");
 ```
 
+* 模板消息
+
+```typescript
+const templatemessageService = wx.getService("templatemessage");
+// 设置所属行业
+templatemessageService.setIndustry(primaryIndustry, secondaryIndustry);
+
+// 获取设置的行业信息
+templatemessageService.getIndustry();
+// 获得模板ID
+templatemessageService.addTemplate(shortId);
+// 获取模板列表
+templatemessageService.getPrivateTemplates();
+// 删除模板
+templatemessageService.deletePrivateTemplate(templateId);
+// 发送模板消息
+templatemessageService.send(data);
+// 一次性订阅消息
+templatemessageService.sendSubscription(data);
+```
+
 * 短网址
 
 ```typescript
@@ -221,6 +243,24 @@ const autoreplyService = wx.getService("autoreply");
 autoreplyService.current();
 ```
 
+* 门店管理
+
+```typescript
+const poiService = wx.getService("poi");
+// 查询门店信息
+poiService.getPOI(id);
+// 查询门店列表
+poiService.list(offset, limit);
+// 创建门店
+poiService.create(poi);
+// 修改门店服务信息
+poiService.update(id, poi);
+// 删除门店
+poiService.delete(id);
+// 获取门店类目表
+poiService.categories();
+```
+
 * 自动回复
 
 ```typescript
@@ -253,6 +293,14 @@ deviceService.forceBind(openId, deviceId);
 deviceService.forceUnbind(openId, deviceId);
 // 通过openid获取用户绑定的设备
 deviceService.getBindDevice(openId);
+```
+
+* 语义查询
+
+```typescript
+const semanticService = wx.getService("semantic");
+// 语义理解查询
+semanticService.query(keyword, categories, optional?);
 ```
 
 * 数据分析

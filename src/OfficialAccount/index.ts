@@ -6,6 +6,9 @@ import DataCubeServiceProvider from "./DataCube/ServiceProvider";
 import DeviceServiceProvider from "./Device/ServiceProvider";
 import ServerServiceProvider from "./Server/ServiceProvider";
 import MenuServiceProvider from "./Menu/ServiceProvider";
+import POIServiceProvider from "./POI/ServiceProvider";
+import SemanticServiceProvider from "./Semantic/ServiceProvider";
+import TemplateMessageServiceProvider from "./TemplateMessage/ServiceProvider";
 import UserServiceProvider from "./User/ServiceProvider";
 import JssdkServiceProvider from "../BasicService/Jssdk/ServiceProvider";
 import MediaServiceProvider from "../BasicService/Media/ServiceProvider";
@@ -24,6 +27,9 @@ export default class Application extends ServiceContainer {
             DeviceServiceProvider,
             ServerServiceProvider,
             MenuServiceProvider,
+            POIServiceProvider,
+            SemanticServiceProvider,
+            TemplateMessageServiceProvider,
             UserServiceProvider,
             JssdkServiceProvider,
             MediaServiceProvider,
