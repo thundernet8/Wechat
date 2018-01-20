@@ -18,7 +18,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [ ] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
     * [ ] 模版消息
-    * [ ] 短网址
+    * [x] 短网址
     * [ ] 语义查询
     * [ ] 数据分析
     * [ ] 摇一摇
@@ -53,30 +53,36 @@ cacher: {
 
 * 消息处理
 
-```typescript
-import * as Koa from "koa";
+<details>
+    <summary>消息处理</summary>
+    ```typescript
+    import * as Koa from "koa";
 
-const app = new Koa();
-const wx = ...
-const mpServer = wx.getService("server");
+    const app = new Koa();
+    const wx = ...
+    const mpServer = wx.getService("server");
 
-mpServer.handle(async function handler(msg) {
+    mpServer.handle(async function handler(msg) {
     switch (msg.type) {
-        case "text":
-            return "received: " + msg.content; // this will be a text reply
-            return new Wechat.Core.ImageReply("MediaId") // this will be a image reply
+    case "text":
+    return "received: " + msg.content; // this will be a text reply
+    return new Wechat.Core.ImageReply("MediaId") // this will be a image reply
 
-        ...
-        default:
-            return "" // no reply
-    }
-});
+            ...
+            default:
+                return "" // no reply
+        }
 
-// inject middlewares
-mpServer.connect(app);
-// or inject to specified path
-mpServer.connect(app, path);
-```
+    });
+
+    // inject middlewares
+    mpServer.connect(app);
+    // or inject to specified path
+    mpServer.connect(app, path);
+
+    ````
+
+</details>
 
 * 媒体上传
 
