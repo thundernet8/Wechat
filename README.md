@@ -40,8 +40,15 @@ const wx = new Wechat.OfficialAccount({
     secret: WX_APPSECRET,
     token: WX_TOKEN,
     aesKey: WX_AESKEY,
-    server: "koa"
+    server: "koa",
+    cacher // 可选
 });
+
+// 在多进程运行环境，需要统一的数据管理，例如Access Token的缓存，需要提供cacher实现(可以使用一个独立的redis server来提供数据)，接口如下:
+cacher: {
+    getter: (key: string) => string;
+    setter: (key: string, data: string) => void;
+}
 ```
 
 * 消息处理

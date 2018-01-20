@@ -34,6 +34,13 @@ export default abstract class ServiceContainer {
         return this.appConfig.server;
     }
 
+    /**
+     * Cache data provider
+     */
+    public get cacher() {
+        return this.appConfig.cacher;
+    }
+
     protected initServices() {
         this.providers.forEach(provider => {
             new provider().register(this);

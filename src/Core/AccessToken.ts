@@ -1,26 +1,51 @@
 import ICredentials from "./Interface/ICredentials";
 import HttpClient from "./Http/HttpClient";
 import IAccessTokenResp from "./Interface/IAccessTokenResp";
+import ServiceContainer from "./ServiceContainer";
 
 export default abstract class AccessToken {
+    protected app: ServiceContainer;
+
+    private TOKEN_CACHE_KEY: string = "_wechat_one_access_token";
+
     /**
-     * Memory cache store
+     * Memory cache store(if no cacher provided)
      */
     protected static store: { [key: string]: any } = {};
 
     protected apiBase: string = "https://api.weixin.qq.com";
 
-    constructor() {}
+    constructor(container: ServiceContainer) {
+        this.app = container;
+    }
+
+    private setCache(data) {
+        if (this.app.cacher) {
+            this.app.cacher.setter(this.TOKEN_CACHE_KEY, JSON.stringify(data));
+            return;
+        }
+        AccessToken.store = data;
+    }
+
+    private getCache() {
+        if (this.app.cacher) {
+            const cache = this.app.cacher.getter(this.TOKEN_CACHE_KEY);
+            return cache ? JSON.parse(cache) : null;
+        }
+        return AccessToken.store;
+    }
 
     public setToken(token: string, expires: number) {
-        AccessToken.store = Object.assign({}, AccessToken.store, {
+        const data = Object.assign({}, AccessToken.store, {
             token,
             expires: Date.now() + expires * 1000
         });
+        this.setCache(data);
     }
 
     public getToken(fresh: boolean = false): Promise<string> {
-        const { token, expires } = AccessToken.store;
+        const data = this.getCache() || {};
+        const { token, expires } = data;
         if (!fresh && token && expires - Date.now() >= 10 * 60 * 1000) {
             return Promise.resolve(token);
         }

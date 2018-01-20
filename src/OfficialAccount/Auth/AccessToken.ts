@@ -2,11 +2,8 @@ import AbstractAccessToken from "../../Core/AccessToken";
 import ServiceContainer from "../../Core/ServiceContainer";
 
 export default class AccessToken extends AbstractAccessToken {
-    private app: ServiceContainer;
-
     public constructor(container: ServiceContainer) {
-        super();
-        this.app = container;
+        super(container);
     }
 
     public getEndpoint() {
