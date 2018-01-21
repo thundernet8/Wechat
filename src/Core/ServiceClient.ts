@@ -3,6 +3,8 @@ import AccessToken from "./AccessToken";
 import HttpClient from "./Http/HttpClient";
 import { addUrlQuery } from "./Utils/Url";
 import MediaType from "./Enum/MediaType";
+import { Stream } from "stream";
+import { IHttpMethod } from "./Interface/IHttpClient";
 
 /**
  * Base Service Client
@@ -45,6 +47,23 @@ export default class ServiceClient {
             });
     }
 
+    public requestRaw(
+        method: IHttpMethod,
+        endpoint: string,
+        data?: { [key: string]: any },
+        headers?: { [key: string]: string | number }
+    ): Promise<any> {
+        return this.getAccessToken().then(accessToken => {
+            if (method === "GET") {
+                data = Object.assign({}, data || {}, { access_token: accessToken });
+            } else {
+                endpoint = addUrlQuery(endpoint, { access_token: accessToken });
+            }
+
+            return this.httpClient.requestRaw(method, endpoint, data || {}, headers);
+        });
+    }
+
     public httpGet<T>(endpoint: string, params?: { [key: string]: any }): Promise<T> {
         return this.getAccessToken().then(accessToken => {
             params = Object.assign({}, params || {}, { access_token: accessToken });
@@ -68,6 +87,28 @@ export default class ServiceClient {
         return this.getAccessToken().then(accessToken => {
             endpoint = addUrlQuery(endpoint, { access_token: accessToken, type });
             return this.httpClient.httpFormUpload<T>(endpoint, filePath, data);
+        });
+    }
+
+    public httpGetDownload(
+        endpoint: string,
+        params?: { [key: string]: any },
+        savePath?: string
+    ): Promise<Stream | void> {
+        return this.getAccessToken().then(accessToken => {
+            params = Object.assign({}, params || {}, { access_token: accessToken });
+            return this.httpClient.httpGetDownload(endpoint, params, savePath);
+        });
+    }
+
+    public httpPostDownload(
+        endpoint: string,
+        data?: { [key: string]: any },
+        savePath?: string
+    ): Promise<Stream | void> {
+        return this.getAccessToken().then(accessToken => {
+            endpoint = addUrlQuery(endpoint, { access_token: accessToken });
+            return this.httpClient.httpGetDownload(endpoint, data || {}, savePath);
         });
     }
 }

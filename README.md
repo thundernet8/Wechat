@@ -7,11 +7,10 @@ Easy to use Wechat SDK for Node(Under dev)
 * 公众平台
     * [x] 消息处理(中间件)
     * [x] 媒体管理(临时素材)
-    * [ ] 素材管理(永久素材)
+    * [x] 素材管理(永久素材)
     * [x] 菜单操作（查询、创建、删除）
     * [x] 二维码（创建临时、永久二维码，查看二维码 URL）
     * [x] 短网址
-    * [ ] 分组操作（查询、创建、修改、移动用户到分组）
     * [x] 用户管理
     * [x] 评论管理
     * [x] 设备管理 (IoT)
@@ -24,7 +23,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 语义查询
     * [x] 数据分析
     * [ ] 摇一摇
-    * [ ] 辅助
+    * [x] 辅助
         * [x] API Limit 清理
         * [x] 获取微信服务器 IP 列表
 
@@ -81,7 +80,7 @@ mpServer.connect(app);
 mpServer.connect(app, path);
 ```
 
-* 媒体上传
+* 媒体管理
 
 ```typescript
 const mediaService = wx.getService("media");
@@ -90,6 +89,32 @@ mediaService.uploadImage("image file path");
 mediaService.uploadVoice("voice file path");
 mediaService.uploadVideo("video file path");
 mediaService.uploadThumb("thumb image file path");
+```
+
+* 素材管理
+
+```typescript
+const materialService = wx.getService("material");
+
+materialService.uploadImage("image file path");
+materialService.uploadVoice("voice file path");
+materialService.uploadVideo("video file path");
+materialService.uploadThumb("thumb image file path");
+
+// 新增永久图文消息素材
+materialService.uploadArticle(articles);
+// 修改永久图文素材
+materialService.updateArticle(mediaId, article, index);
+// 上传图文消息内的图片获取URL
+materialService.uploadArticleImage(path);
+// 获取永久素材
+materialService.get(mediaId);
+// 删除永久素材
+materialService.delete(mediaId);
+// 获取素材列表
+materialService.list(type, offset, limit);
+// 获取素材总数
+materialService.stats();
 ```
 
 * 菜单操作

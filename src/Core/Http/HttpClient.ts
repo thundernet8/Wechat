@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as formstream from "formstream";
 import { IHttpClientOptions, IHttpMethod } from "../Interface/IHttpClient";
+import { Stream } from "stream";
 
 export default class HttpClient {
     private options: IHttpClientOptions;
@@ -30,6 +31,27 @@ export default class HttpClient {
         });
     }
 
+    private _requestRaw(
+        method: IHttpMethod,
+        endpoint: string,
+        params: { [key: string]: any } | string | null,
+        headers?: { [key: string]: string | number }
+    ): Promise<any> {
+        if (!endpoint.startsWith("/")) {
+            endpoint = "/" + endpoint;
+        }
+        return this.ax.request({
+            url: endpoint,
+            method,
+            headers: headers || {},
+            params: method.toUpperCase() === "GET" ? params : null,
+            data: method.toUpperCase() !== "GET" ? params : null,
+            validateStatus: function(status) {
+                return status >= 200 && status < 500;
+            }
+        });
+    }
+
     private _request<T>(
         method: IHttpMethod,
         endpoint: string,
@@ -39,33 +61,31 @@ export default class HttpClient {
         if (!endpoint.startsWith("/")) {
             endpoint = "/" + endpoint;
         }
-        return this.ax
-            .request({
-                url: endpoint,
-                method,
-                headers: headers || {},
-                params: method.toUpperCase() === "GET" ? params : null,
-                data: method.toUpperCase() !== "GET" ? params : null,
-                validateStatus: function(status) {
-                    return status >= 200 && status < 500;
+        return this._requestRaw(method, endpoint, params, headers).then(resp => {
+            // debug
+            console.log(`request ${endpoint} resp:`, resp.data);
+            if (resp.status >= 400) {
+                throw new Error(resp.data);
+            }
+            if (resp.data) {
+                const { errcode, errmsg } = resp.data;
+                if (errcode) {
+                    throw new Error(errmsg);
+                } else if (errcode === 0 && Object.keys(resp.data).length === 2) {
+                    return errmsg as T;
                 }
-            })
-            .then(resp => {
-                // debug
-                console.log(`request ${endpoint} resp:`, resp.data);
-                if (resp.status >= 400) {
-                    throw new Error(resp.data);
-                }
-                if (resp.data) {
-                    const { errcode, errmsg } = resp.data;
-                    if (errcode) {
-                        throw new Error(errmsg);
-                    } else if (errcode === 0 && Object.keys(resp.data).length === 2) {
-                        return errmsg as T;
-                    }
-                }
-                return resp.data as T;
-            });
+            }
+            return resp.data as T;
+        });
+    }
+
+    public requestRaw(
+        method: IHttpMethod,
+        endpoint: string,
+        params: { [key: string]: any } | string | null,
+        headers?: { [key: string]: string | number }
+    ) {
+        return this._requestRaw(method, endpoint, params, headers);
     }
 
     public httpGet<T>(endpoint: string, params: { [key: string]: any } | null): Promise<T> {
@@ -103,5 +123,32 @@ export default class HttpClient {
         } catch (error) {
             return Promise.reject(error.message || error.toString());
         }
+    }
+
+    public httpGetDownload(endpoint: string, params?: { [key: string]: any }, savePath?: string) {
+        return this.httpDownload("GET", endpoint, params, savePath);
+    }
+
+    public httpPostDownload(endpoint: string, data?: { [key: string]: any }, savePath?: string) {
+        return this.httpDownload("POST", endpoint, data, savePath);
+    }
+
+    private httpDownload(
+        method: IHttpMethod,
+        endpoint: string,
+        data?: { [key: string]: any },
+        savePath?: string
+    ): Promise<Stream | void> {
+        const headers = {
+            responseType: "stream"
+        };
+        return this._request<{ data: Stream }>(method, endpoint, data || {}, headers).then(resp => {
+            if (savePath) {
+                resp.data.pipe(fs.createWriteStream(savePath));
+                return;
+            } else {
+                return resp.data;
+            }
+        });
     }
 }

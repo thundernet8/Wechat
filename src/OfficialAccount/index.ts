@@ -5,6 +5,7 @@ import CommentServiceProvider from "./Comment/ServiceProvider";
 import DataCubeServiceProvider from "./DataCube/ServiceProvider";
 import DeviceServiceProvider from "./Device/ServiceProvider";
 import ServerServiceProvider from "./Server/ServiceProvider";
+import MaterialServiceProvider from "./Material/ServiceProvider";
 import MenuServiceProvider from "./Menu/ServiceProvider";
 import POIServiceProvider from "./POI/ServiceProvider";
 import SemanticServiceProvider from "./Semantic/ServiceProvider";
@@ -26,6 +27,7 @@ export default class Application extends ServiceContainer {
             DataCubeServiceProvider,
             DeviceServiceProvider,
             ServerServiceProvider,
+            MaterialServiceProvider,
             MenuServiceProvider,
             POIServiceProvider,
             SemanticServiceProvider,
