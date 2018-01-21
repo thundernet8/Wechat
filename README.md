@@ -16,7 +16,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 设备管理 (IoT)
     * [x] 门店管理
     * [x] 自动回复 (查询自动回复规则)
-    * [ ] 群发消息（文本、图片、语音、视频、图文）
+    * [x] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
     * [x] 模版消息
     * [x] 短网址
@@ -266,6 +266,34 @@ commentService.deleteReply(msgId, index, commentId);
 const autoreplyService = wx.getService("autoreply");
 // 获取公众号的自动回复规则
 autoreplyService.current();
+```
+
+* 群发消息
+
+```typescript
+const broadcastService = wx.getService("broadcast");
+// 根据OpenID列表群发消息
+broadcastService.sendToList(message, to);
+// 根据标签进行群发
+broadcastService.send(message, tagId, toAll);
+// 群发消息预览
+broadcastService.preview(message, to, filter);
+// 删除群发消息
+broadcastService.delete(msgId, articleIndex);
+// 获取群发消息
+broadcastService.status(msgId);
+// 群发文本消息
+broadcastService.sendText();
+// 群发语音消息
+broadcastService.sendVoice();
+// 群发图片消息
+broadcastService.sendImage();
+// 群发视频消息
+broadcastService.sendVideo();
+// 群发卡券消息
+broadcastService.sendCard();
+// 群发图文消息
+broadcastService.sendNews();
 ```
 
 * 设备管理
