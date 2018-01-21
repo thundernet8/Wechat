@@ -63,6 +63,7 @@ export default abstract class ServiceContainer {
     }
 
     public getService(name: string) {
+        name = name.toLowerCase();
         if (this.serviceClients[name]) {
             return this.serviceClients[name];
         }
