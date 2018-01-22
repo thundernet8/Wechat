@@ -1,6 +1,20 @@
-## Wechat
+<div align="center">
 
-Easy to use Wechat SDK for Node(Under dev)
+## Wechat-One
+
+**Easy to use Wechat SDK for Node(Under dev) .**
+
+[![GitHub issues](https://img.shields.io/github/issues/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/issues)
+[![GitHub forks](https://img.shields.io/github/forks/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/network)
+[![GitHub stars](https://img.shields.io/github/stars/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/stargazers)
+[![dependency status](https://img.shields.io/david/thundernet8/Wechat.svg?maxAge=3600&style=flat)](https://david-dm.org/thundernet8/Wechat)
+[![Build Status](https://travis-ci.org/thundernet8/Wechat.svg?branch=master)](https://travis-ci.org/thundernet8/Wechat)
+[![GitHub license](https://img.shields.io/github/license/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/blob/master/LICENSE)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+</div>
+
+<br>
 
 ## Implements
 
@@ -15,6 +29,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 评论管理
     * [x] 设备管理 (IoT)
     * [x] 门店管理
+    * [ ] 卡券管理
     * [x] 自动回复 (查询自动回复规则)
     * [x] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
@@ -23,11 +38,46 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 语义查询
     * [x] 数据分析
     * [ ] 摇一摇
+    * [ ] OAuth
     * [x] 辅助
         * [x] API Limit 清理
         * [x] 获取微信服务器 IP 列表
 
 ## Usage
+
+### Typings 支持
+
+npm package 已经添加了 Typings 支持，为了获得更好的类型和自动提示支持，推荐使用 TypeScript 开发
+
+获取一个具体的类型化服务
+
+```typescript
+import Wechat from "wechat-one";
+
+const wx = new Wechat.OfficialAccount({
+    appid: WX_APPID,
+    secret: WX_APPSECRET,
+    token: WX_TOKEN,
+    aesKey: WX_AESKEY,
+    server: "koa"
+});
+
+const userService = wx.getService<Wechat.Service.UserService>("user");
+```
+
+实例化一个文本回复
+
+```typescript
+const reply = new Wechat.Core.TextReply("content");
+```
+
+实例化一个文本群发消息
+
+```typescript
+const broadcast = new Wechat.Core.TextBroadcastMessage("content");
+```
+
+参考[更多](src/index.d.ts)
 
 ### 公众平台
 

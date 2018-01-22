@@ -8,11 +8,11 @@ enum MessageType {
     SHORT_VIDEO = "shortvideo",
     LOCATION = "location",
     LINK = "link",
-    // DEVICE_EVENT = "deviceevent",
-    // DEVICE_TEXT = "devicetext",
-    // FILE = "file",
-    // TEXT_CARD = "textcard",
-    // TRANSFER = "transfer",
+    DEVICE_EVENT = "deviceevent",
+    DEVICE_TEXT = "devicetext",
+    FILE = "file",
+    TEXT_CARD = "textcard",
+    TRANSFER = "transfer",
     EVENT = "event",
     UNKNOWN = "unknown"
 }

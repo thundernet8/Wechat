@@ -1,7 +1,7 @@
 import BroadcastMessage from "./BroadcastMessage";
 import BroadcastMessageType from "../Enum/BroadcastMessageType";
 
-export default class MPNewsBroadcastMessage extends BroadcastMessage {
+export default class NewsBroadcastMessage extends BroadcastMessage {
     private _mediaId: string;
     private _ignoreReprint: boolean;
 

@@ -26,6 +26,26 @@ export default class MusicMessage extends Message {
         this._thumbMediaId = thumbMediaId;
     }
 
+    public get title() {
+        return this._title;
+    }
+
+    public get description() {
+        return this._description;
+    }
+
+    public get musicUrl() {
+        return this._musicUrl;
+    }
+
+    public get hqMusicUrl() {
+        return this._hqMusicUrl;
+    }
+
+    public get thumbMediaId() {
+        return this._thumbMediaId;
+    }
+
     protected toPOJO() {
         return Object.assign({}, super.toPOJO(), {
             Title: this._title,

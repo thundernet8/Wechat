@@ -25,7 +25,7 @@ interface IBusiness {
 }
 
 export interface IGetPOIResp extends IWXCommonResp {
-    "business ": IBusiness;
+    business: IBusiness;
 }
 
 export interface IGetPOIListResp extends IWXCommonResp {

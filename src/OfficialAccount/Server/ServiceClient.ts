@@ -60,6 +60,9 @@ export default class ServiceClient extends BaseServiceClient {
         return resp;
     }
 
+    /**
+     * handle message from wechat server
+     */
     public handle(handler: (msg: Message) => Promise<string | Message | false>) {
         this.msgHandlers.push(handler);
     }

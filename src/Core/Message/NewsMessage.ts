@@ -28,6 +28,26 @@ export default class NewsMessage extends Message {
         this._articleCount = this._articles.length + 1;
     }
 
+    public get title() {
+        return this._title;
+    }
+
+    public get description() {
+        return this._description;
+    }
+
+    public get picUrl() {
+        return this._picUrl;
+    }
+
+    public get url() {
+        return this._url;
+    }
+
+    public get articles() {
+        return this._articles;
+    }
+
     protected toPOJO() {
         return Object.assign({}, super.toPOJO(), {
             Title: this._title,

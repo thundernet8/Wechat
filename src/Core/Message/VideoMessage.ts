@@ -23,6 +23,14 @@ export default class VideoMessage extends Message {
         this._description = description || "";
     }
 
+    public get title() {
+        return this._title;
+    }
+
+    public get description() {
+        return this._description;
+    }
+
     /**
      * 视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据
      */

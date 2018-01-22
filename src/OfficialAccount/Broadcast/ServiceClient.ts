@@ -10,7 +10,7 @@ import {
 import VoiceBroadcastMessage from "Core/BroadcastMessage/VoiceBroadcastMessage";
 import ImageBroadcastMessage from "Core/BroadcastMessage/ImageBroadcastMessage";
 import CardBroadcastMessage from "Core/BroadcastMessage/CardBroadcastMessage";
-import MPNewsBroadcastMessage from "Core/BroadcastMessage/MPNewsBroadcastMessage";
+import NewsBroadcastMessage from "Core/BroadcastMessage/NewsBroadcastMessage";
 
 /**
  * Implement methods of Broadcast service
@@ -127,7 +127,7 @@ export default class ServiceClient extends BaseServiceClient {
     }
 
     public sendNews(mediaId: string, reception?: number | string[]) {
-        const message = new MPNewsBroadcastMessage(mediaId);
+        const message = new NewsBroadcastMessage(mediaId);
         return this.sendMessage(message, reception);
     }
 
