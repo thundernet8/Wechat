@@ -4,11 +4,11 @@ export as namespace WechatOne;
 
 export = WechatOne;
 
-declare var WechatOne: {
-    OfficialAccount: internal.ServiceContainer;
-    OpenPlatform: internal.ServiceContainer;
-    Payment: internal.ServiceContainer;
-    Core: {
+declare namespace WechatOne {
+    var OfficialAccount: internal.ServiceContainer;
+    var OpenPlatform: internal.ServiceContainer;
+    var Payment: internal.ServiceContainer;
+    var Core: {
         TextReply: reply.TextReply;
         ImageReply: reply.ImageReply;
         VoiceReply: reply.VoiceReply;
@@ -26,10 +26,47 @@ declare var WechatOne: {
         EventType: enums.EventType;
         BroadcastMessageType: enums.BroadcastMessageType;
     };
-    Service: {
-        BaseService: service.BaseService;
-    };
-};
+
+    namespace OfficialAccountService {
+        interface BaseService extends service.BaseService {}
+
+        interface MediaService extends service.MediaService {}
+
+        interface QrCodeService extends service.QrCodeService {}
+
+        interface UrlService extends service.UrlService {}
+
+        interface AutoReplyService extends service.AutoReplyService {}
+
+        interface BroadcastService extends service.BroadcastService {}
+
+        interface CardService extends service.CardService {}
+
+        interface CommentService extends service.CommentService {}
+
+        interface CustomerServiceService extends service.CustomerServiceService {}
+
+        interface DataCubeService extends service.DataCubeService {}
+
+        interface DeviceService extends service.DeviceService {}
+
+        interface MaterialService extends service.MaterialService {}
+
+        interface MenuService extends service.MenuService {}
+
+        interface POIService extends service.POIService {}
+
+        interface SemanticService extends service.SemanticService {}
+
+        interface ServerService extends service.ServerService {}
+
+        interface ShakeAroundService extends service.ShakeAroundService {}
+
+        interface TemplateMessageService extends service.TemplateMessageService {}
+
+        interface UserService extends service.UserService {}
+    }
+}
 
 declare namespace internal {
     export interface IAppConfig {
