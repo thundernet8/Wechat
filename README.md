@@ -52,7 +52,7 @@ npm package 已经添加了 Typings 支持，为了获得更好的类型和自�
 获取一个具体的类型化服务
 
 ```typescript
-import Wechat from "wechat-one";
+import Wechat, {OfficialAccountService} from "wechat-one";
 
 const wx = new Wechat.OfficialAccount({
     appid: WX_APPID,
@@ -62,7 +62,9 @@ const wx = new Wechat.OfficialAccount({
     server: "koa"
 });
 
-const userService = wx.getService<Wechat.Service.UserService>("user");
+const userService = wx.getService<OfficialAccountService.UserService>("user");
+// or
+const userService = wx.getService("user") as OfficialAccountService.UserService;
 ```
 
 实例化一个文本回复
