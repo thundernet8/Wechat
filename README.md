@@ -15,6 +15,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 评论管理
     * [x] 设备管理 (IoT)
     * [x] 门店管理
+    * [ ] 卡券管理
     * [x] 自动回复 (查询自动回复规则)
     * [x] 群发消息（文本、图片、语音、视频、图文）
     * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
@@ -23,6 +24,7 @@ Easy to use Wechat SDK for Node(Under dev)
     * [x] 语义查询
     * [x] 数据分析
     * [ ] 摇一摇
+    * [ ] OAuth
     * [x] 辅助
         * [x] API Limit 清理
         * [x] 获取微信服务器 IP 列表

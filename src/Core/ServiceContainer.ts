@@ -46,7 +46,7 @@ export default abstract class ServiceContainer {
      * @param key
      */
     public getConfig(key: string) {
-        if (this.appConfig[key]) {
+        if (this.appConfig[key] !== undefined) {
             return this.appConfig[key];
         }
         return null;

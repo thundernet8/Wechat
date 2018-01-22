@@ -60,14 +60,14 @@ export default class ServiceClient extends BaseServiceClient {
      * @param title
      * @param description
      */
-    public uploadVideo(path: string, title: string, description: string) {
+    public uploadVideo(path: string, title?: string, description?: string) {
         const data = {
             description: JSON.stringify({
-                title,
-                introduction: description
+                title: title || "",
+                introduction: description || ""
             })
         };
-        return this.upload(MediaType.VIDEO, path, data);
+        return this.upload<IUploadCommonResp>(MediaType.VIDEO, path, data);
     }
 
     /**

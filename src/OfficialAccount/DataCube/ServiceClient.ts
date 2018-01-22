@@ -17,6 +17,8 @@ import {
     IGetUpstreamMsgDistMonthlyResp,
     IGetInterfaceSummaryResp,
     IGetInterfaceSummaryHourlyResp,
+    IGetCardSummaryResp,
+    IGetFreeCardSummaryResp,
     IGetMemberCardSummaryResp,
     IGetMemberCardDetailResp
 } from "../Interface/IDataCube";
@@ -205,7 +207,7 @@ export default class ServiceClient extends BaseServiceClient {
         const extData = {
             cond_source: condSource
         };
-        return this.query("/datacube/getcardbizuininfo", from, to, extData);
+        return this.query<IGetCardSummaryResp>("/datacube/getcardbizuininfo", from, to, extData);
     }
 
     /**
@@ -220,7 +222,7 @@ export default class ServiceClient extends BaseServiceClient {
             cond_source: condSource,
             card_id: cardId
         };
-        return this.query("/datacube/getcardcardinfo", from, to, extData);
+        return this.query<IGetFreeCardSummaryResp>("/datacube/getcardcardinfo", from, to, extData);
     }
 
     /**
