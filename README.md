@@ -2,7 +2,7 @@
 
 ## Wechat-One
 
-**Easy to use Wechat SDK for Node(Under dev) .**
+**Easy to use Wechat SDK for Node .**
 
 [![GitHub issues](https://img.shields.io/github/issues/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/issues)
 [![GitHub forks](https://img.shields.io/github/forks/thundernet8/Wechat.svg)](https://github.com/thundernet8/Wechat/network)
@@ -52,7 +52,7 @@ npm package 已经添加了 Typings 支持，为了获得更好的类型和自�
 获取一个具体的类型化服务
 
 ```typescript
-import Wechat, {OfficialAccountService} from "wechat-one";
+import Wechat, { OfficialAccountService } from "wechat-one";
 
 const wx = new Wechat.OfficialAccount({
     appid: WX_APPID,

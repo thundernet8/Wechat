@@ -203,6 +203,40 @@ declare namespace message {
         toJSON(): string;
 
         toXML(): string;
+
+        content?: string;
+
+        title?: string;
+
+        description?: string;
+
+        url?: string;
+
+        picUrl?: string;
+
+        mediaId?: string;
+
+        event?: enums.EventType;
+
+        locationX?: string;
+
+        locationY?: string;
+
+        scale?: number;
+
+        label?: string;
+
+        musicUrl?: string;
+
+        hqMusicUrl?: string;
+
+        thumbMediaId?: string;
+
+        articles?: NewsMessage[];
+
+        format?: string;
+
+        recognition?: string;
     }
 
     export interface TextMessage extends Message {
@@ -1021,11 +1055,15 @@ declare namespace service {
     export interface SemanticService {
         /**
          * 语义理解查询
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241
+         * @param keyword
+         * @param categories
+         * @param ext 至少提供城市/经纬度信息其一
          */
         query(
             keyword: string,
             categories: string,
-            optional?: { [key: string]: any }
+            ext: { [key: string]: any }
         ): Promise<resp.ISemanticQueryResp>;
     }
 
