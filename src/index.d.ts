@@ -1055,11 +1055,15 @@ declare namespace service {
     export interface SemanticService {
         /**
          * 语义理解查询
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241
+         * @param keyword
+         * @param categories
+         * @param ext 至少提供城市/经纬度信息其一
          */
         query(
             keyword: string,
             categories: string,
-            optional?: { [key: string]: any }
+            ext: { [key: string]: any }
         ): Promise<resp.ISemanticQueryResp>;
     }
 

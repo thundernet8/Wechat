@@ -7,10 +7,10 @@ import {
     IDeleteBroadMessageResp,
     IGetBroadMessageResp
 } from "../Interface/IBroadcastMessage";
-import VoiceBroadcastMessage from "Core/BroadcastMessage/VoiceBroadcastMessage";
-import ImageBroadcastMessage from "Core/BroadcastMessage/ImageBroadcastMessage";
-import CardBroadcastMessage from "Core/BroadcastMessage/CardBroadcastMessage";
-import NewsBroadcastMessage from "Core/BroadcastMessage/NewsBroadcastMessage";
+import VoiceBroadcastMessage from "../../Core/BroadcastMessage/VoiceBroadcastMessage";
+import ImageBroadcastMessage from "../../Core/BroadcastMessage/ImageBroadcastMessage";
+import CardBroadcastMessage from "../../Core/BroadcastMessage/CardBroadcastMessage";
+import NewsBroadcastMessage from "../../Core/BroadcastMessage/NewsBroadcastMessage";
 
 /**
  * Implement methods of Broadcast service
@@ -32,11 +32,11 @@ export default class ServiceClient extends BaseServiceClient {
      * 根据标签进行群发【订阅号与服务号认证后均可用】
      * @param message
      */
-    public send(message: BroadcastMessage, tagId?: number, toAll?: boolean) {
+    public send(message: BroadcastMessage, tagId?: number | null, toAll?: boolean) {
         const filter = {
             is_to_all: !!toAll
         };
-        if (tagId !== undefined) {
+        if (tagId !== undefined && tagId !== null) {
             filter["tag_id"] = tagId;
         }
         const data = Object.assign(
@@ -137,6 +137,6 @@ export default class ServiceClient extends BaseServiceClient {
         } else if (typeof reception === "number") {
             return this.send(message, reception, false);
         }
-        return this.send(message);
+        return this.send(message, null, true);
     }
 }
