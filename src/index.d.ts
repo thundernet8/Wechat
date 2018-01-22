@@ -203,6 +203,40 @@ declare namespace message {
         toJSON(): string;
 
         toXML(): string;
+
+        content?: string;
+
+        title?: string;
+
+        description?: string;
+
+        url?: string;
+
+        picUrl?: string;
+
+        mediaId?: string;
+
+        event?: enums.EventType;
+
+        locationX?: string;
+
+        locationY?: string;
+
+        scale?: number;
+
+        label?: string;
+
+        musicUrl?: string;
+
+        hqMusicUrl?: string;
+
+        thumbMediaId?: string;
+
+        articles?: NewsMessage[];
+
+        format?: string;
+
+        recognition?: string;
     }
 
     export interface TextMessage extends Message {
