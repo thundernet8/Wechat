@@ -1,13 +1,17 @@
 {
     "name": "wechat-one",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "description": "Easy to use Wechat SDK for Node",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "repository": "git@github.com:thundernet8/Wechat.git",
     "author": "WuXueqian <wuxueqian2010@hotmail.com>",
     "license": "MIT",
-    "keywords": ["wechat", "wechat-sdk", "nodejs"],
+    "keywords": [
+        "wechat",
+        "wechat-sdk",
+        "nodejs"
+    ],
     "scripts": {
         "build": "rimraf lib && tsc && cp src/index.d.ts lib/",
         "prepublish": "npm run build",
@@ -17,7 +21,9 @@
         "lint-staged:ts": "tslint --fix -c .tslintrc.json"
     },
     "lint-staged": {
-        "src/**/*.{ts,tsx}": ["lint-staged:ts"]
+        "src/**/*.{ts,tsx}": [
+            "lint-staged:ts"
+        ]
     },
     "pre-commit": "lint-staged",
     "devDependencies": {
