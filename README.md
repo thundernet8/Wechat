@@ -32,7 +32,8 @@
     * [ ] 卡券管理
     * [x] 自动回复 (查询自动回复规则)
     * [x] 群发消息（文本、图片、语音、视频、图文）
-    * [ ] 客服记录（查询客服记录，查看客服、查看在线客服）
+    * [x] 客服记录（查询客服记录，查看客服、查看在线客服）
+    * [x] 客服会话
     * [x] 模版消息
     * [x] 短网址
     * [x] 语义查询
@@ -346,6 +347,48 @@ broadcastService.sendVideo();
 broadcastService.sendCard();
 // 群发图文消息
 broadcastService.sendNews();
+```
+
+* 客服记录
+
+```typescript
+const kfService = wx.getService("kf");
+// 获取客服列表
+kfService.list();
+// 获取在线客服列表
+kfService.onlineList();
+// 添加客服帐号
+kfService.create(account, nickname);
+// 设置客服信息
+kfService.update(account, nickname);
+// 删除客服帐号
+kfService.delete(account);
+// 邀请绑定客服帐号
+kfService.invite(account, wechatId);
+// 上传客服头像
+kfService.uploadAvatar(account, imagePath);
+// 客服接口-发消息
+kfService.sendMessage(message, to, kfAccount?);
+// 客服输入状态
+kfService.sendTypingStatus(to);
+// 获取聊天记录
+kfService.messageHistory(startTime, endTime, msgId, count);
+```
+
+* 客服会话
+
+```typescript
+const kfSessionService = wx.getService("kfsession");
+// 获取客服会话列表
+kfSessionService.list(account);
+// 获取未接入会话列表
+kfSessionService.waitingList();
+// 创建会话
+kfSessionService.create(account, openId);
+// 关闭会话
+kfSessionService.close(account, openId);
+// 获取客户会话状态
+kfSessionService.stats(openId);
 ```
 
 * 设备管理

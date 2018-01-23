@@ -81,11 +81,15 @@ export default class ServiceClient {
     public httpFormUpload<T>(
         endpoint: string,
         filePath: string,
-        type: MediaType,
+        type?: MediaType,
         data?: { [key: string]: any }
     ): Promise<T> {
         return this.getAccessToken().then(accessToken => {
-            endpoint = addUrlQuery(endpoint, { access_token: accessToken, type });
+            const params = { access_token: accessToken };
+            if (type) {
+                params["type"] = type;
+            }
+            endpoint = addUrlQuery(endpoint, params);
             return this.httpClient.httpFormUpload<T>(endpoint, filePath, data);
         });
     }
