@@ -3,6 +3,7 @@ import { ICreateQrCodeResp } from "../Interface/IQrCode";
 
 /**
  * Implement methods of QrCode service
+ * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542
  */
 export default class ServiceClient extends BaseServiceClient {
     private SCENE_MAX_VALUE = 100000;
