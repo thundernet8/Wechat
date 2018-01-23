@@ -5,8 +5,17 @@ export as namespace WechatOne;
 export = WechatOne;
 
 declare namespace WechatOne {
+    /**
+     * 微信公众平台SDK
+     */
     var OfficialAccount: internal.ServiceContainer;
+    /**
+     * 微信开放平台SDK
+     */
     var OpenPlatform: internal.ServiceContainer;
+    /**
+     * 微信支付SDK
+     */
     var Payment: internal.ServiceContainer;
     var Core: {
         TextReply: reply.TextReply;
@@ -75,7 +84,7 @@ declare namespace internal {
         token: string;
         aesKey?: string;
         server?: "express" | "koa";
-        deviceType?: string; // IOT required, 设备类型，目前为“公众账号原始 ID”
+        deviceType?: string; // IoT required, 设备类型，目前为“公众账号原始 ID”
         log?: {
             level: "error" | "debug" | "info";
             file: string;
@@ -128,12 +137,19 @@ declare namespace internal {
               })
             | undefined;
 
+        /**
+         * 获取SDK实例化时的配置项值
+         */
         getConfig(key: string): string | number | null;
 
-        setService(name: string, serviceClient: ServiceClient): void;
+        /**
+         * 获取一个服务实例
+         */
+        getService(name: string): any;
 
-        getService(name: string): ServiceClient;
-
+        /**
+         * 获取一个服务实例
+         */
         getService<T>(name: string): T;
     }
 }
@@ -675,10 +691,122 @@ declare namespace service {
     }
 
     /**
-     * "customerservice" service
+     * "kf" service
      */
     export interface CustomerServiceService {
-        // TODO
+        /**
+         * 获取客服列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
+         */
+        list(): Promise<resp.IGetCustomerKFListResp>;
+
+        /**
+         * 获取在线客服列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
+         */
+        onlineList(): Promise<resp.IGetCustomerKFOnlineListResp>;
+
+        /**
+         * 添加客服帐号
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号，帐号前缀最多10个字符，必须是英文、数字字符或者下划线，后缀为公众号微信号，长度不超过30个字符
+         * @param nickname 客服昵称，最长16个字
+         */
+        create(account: string, nickname: string): Promise<string>;
+
+        /**
+         * 设置客服信息
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         * @param nickname 客服昵称，最长16个字
+         */
+        update(account: string, nickname: string): Promise<string>;
+
+        /**
+         * 删除客服帐号
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         */
+        delete(account: string): Promise<string>;
+
+        /**
+         * 邀请绑定客服帐号
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         * @param wechatId 接收绑定邀请的客服微信号
+         */
+        invite(account: string, wechatId: string): Promise<string>;
+
+        /**
+         * 上传客服头像
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         * @param imagePath 图片路径
+         */
+        uploadAvatar(account: string, imagePath: string): Promise<string>;
+
+        /**
+         * 客服接口-发消息
+         * @param message 文本或BroadcastMessage子类实例
+         * @param to 目标用户OpenId
+         * @param kfAccount 以某个客服帐号来发消息(可选)
+         */
+        sendMessage(
+            message: string | broadcast.BroadcastMessage,
+            to: string,
+            kfAccount?: string
+        ): Promise<string>;
+
+        /**
+         * 客服输入状态
+         * @param to 目标用户OpenId
+         */
+        sendTypingStatus(to: string): Promise<string>;
+
+        /**
+         * 获取聊天记录
+         * @param startTime 起始时间，unix时间戳
+         * @param endTime 结束时间，unix时间戳，每次查询时段不能超过24小时
+         * @param msgId 消息id顺序从小到大，从1开始
+         * @param count 每次获取条数，最多10000条
+         */
+        messageHistory(
+            startTime: number,
+            endTime: number,
+            msgId?: number,
+            count?: number
+        ): Promise<resp.IGetCustomerKFMessageListResp>;
+    }
+
+    /**
+     * "kfsession" service
+     */
+    export interface CustomerServiceSessionService {
+        /**
+         * 获取客服会话列表
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         */
+        list(account: string): Promise<resp.IGetKFSessionListResp>;
+
+        /**
+         * 获取未接入会话列表
+         */
+        waitingList(): Promise<resp.IGetKFSessionWaitingListResp>;
+
+        /**
+         * 创建会话
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         * @param openId 粉丝的openid
+         */
+        create(account: string, openId: string): Promise<string>;
+
+        /**
+         * 关闭会话
+         * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
+         * @param openId 粉丝的openid
+         */
+        close(account: string, openId: string): Promise<string>;
+
+        /**
+         * 获取客户会话状态
+         * @param openId 粉丝的openid
+         */
+        stats(openId: string): Promise<resp.IGetCustomerSessionResp>;
     }
 
     /**
@@ -1889,5 +2017,63 @@ declare namespace resp {
             openid: string[];
         };
         next_openid: string;
+    }
+
+    export interface ICustomerKF {
+        kf_account: string;
+        kf_headimgurl: string;
+        kf_id: string;
+        kf_nick: string;
+        kf_wx: string;
+        invite_wx?: string;
+        invite_expire_time?: number;
+        invite_status?: string;
+    }
+
+    export interface ICustomerKFOnline {
+        kf_account: string;
+        status: number;
+        kf_id: string;
+        accepted_case: number;
+    }
+
+    export interface IGetCustomerKFListResp {
+        kf_list: ICustomerKF[];
+    }
+
+    export interface IGetCustomerKFOnlineListResp {
+        kf_online_list: ICustomerKFOnline[];
+    }
+
+    export interface ICustomerKFMessageRecord {
+        openid: string;
+        opercode: number;
+        text: string;
+        time: number;
+        worker: string;
+    }
+
+    export interface IGetCustomerKFMessageListResp {
+        recordlist: ICustomerKFMessageRecord[];
+    }
+
+    export interface IGetKFSessionListResp {
+        sessionlist: {
+            createtime: number;
+            openid: string;
+        }[];
+    }
+
+    export interface IGetKFSessionWaitingListResp {
+        count: number;
+        waitcaselist: {
+            latest_time: number;
+            openid: string;
+        }[];
+    }
+
+    export interface IGetCustomerSessionResp {
+        createtime: number;
+        kf_account: string;
     }
 }
