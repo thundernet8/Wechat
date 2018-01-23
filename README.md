@@ -334,7 +334,7 @@ broadcastService.preview(message, to, filter);
 // 删除群发消息
 broadcastService.delete(msgId, articleIndex);
 // 获取群发消息
-broadcastService.status(msgId);
+broadcastService.stats(msgId);
 // 群发文本消息
 broadcastService.sendText();
 // 群发语音消息

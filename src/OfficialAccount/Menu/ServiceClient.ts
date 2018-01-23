@@ -3,6 +3,7 @@ import IMenu, { IMenuButton, IConditionalMenu, IMenuConfig } from "../Interface/
 
 /**
  * Implement methods of Menu management service
+ * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013
  */
 export default class ServiceClient extends BaseServiceClient {
     /**

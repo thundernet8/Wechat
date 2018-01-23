@@ -93,7 +93,7 @@ export default class ServiceClient extends BaseServiceClient {
      * 获取群发消息
      * @param msgId
      */
-    public status(msgId: string) {
+    public stats(msgId: string) {
         const data = {
             msg_id: msgId
         };

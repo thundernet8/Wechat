@@ -53,7 +53,9 @@ declare namespace WechatOne {
 
         interface CommentService extends service.CommentService {}
 
-        interface CustomerServiceService extends service.CustomerServiceService {}
+        interface KFService extends service.KFService {}
+
+        interface KFSessionService extends service.KFSessionService {}
 
         interface DataCubeService extends service.DataCubeService {}
 
@@ -490,11 +492,13 @@ declare namespace service {
     export interface BaseService {
         /**
          * 获取微信服务器IP地址
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140187
          */
         getValidIps: Promise<string[]>;
 
         /**
          * 公众号调用或第三方平台帮公众号调用对公众号的所有api调用（包括第三方帮其调用）次数进行清零
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433744592
          */
         clearQuota(): Promise<string>;
     }
@@ -505,26 +509,31 @@ declare namespace service {
     export interface MediaService {
         /**
          * 上传图片临时素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726
          */
         uploadImage(filePath: string): Promise<string>;
 
         /**
          * 上传语音临时素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726
          */
         uploadVoice(filePath: string): Promise<string>;
 
         /**
          * 上传视频临时素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726
          */
         uploadVideo(filePath: string, title: string, description?: string): Promise<string>;
 
         /**
          * 上传缩略图临时素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726
          */
         uploadThumb(filePath: string): Promise<string>;
 
         /**
          * 获取临时素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738727
          */
         getMediaStream(mediaId: string): Promise<Stream>;
     }
@@ -535,16 +544,19 @@ declare namespace service {
     export interface QrCodeService {
         /**
          * 创建永久二维码
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542
          */
         forever(sceneValue: string | number): resp.ICreateQrCodeResp;
 
         /**
          * 创建临时二维码
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542
          */
         temporary(sceneValue: string | number, expireSeconds?: number): resp.ICreateQrCodeResp;
 
         /**
          * 通过ticket换取二维码
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542
          */
         url(ticket: string): string;
     }
@@ -555,6 +567,7 @@ declare namespace service {
     export interface UrlService {
         /**
          * 长链接转短链接
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433600
          */
         shorten(url: string): Promise<string>;
     }
@@ -565,6 +578,7 @@ declare namespace service {
     export interface AutoReplyService {
         /**
          * 获取公众号的自动回复规则
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751299
          */
         current(): any;
     }
@@ -573,26 +587,52 @@ declare namespace service {
      * "broadcast" service
      */
     export interface BroadcastService {
+        /**
+         * 根据OpenID列表群发【订阅号不可用，服务号认证后可用】
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+         * @param message
+         * @param to user openId list
+         */
         sendToList(
             message: broadcast.BroadcastMessage,
             to: { towxname?: string[]; touser?: string[] }
         ): Promise<resp.ISendBroadcastMessageResp>;
 
+        /**
+         * 根据标签进行群发【订阅号与服务号认证后均可用】
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+         * @param message
+         */
         send(
             message: broadcast.BroadcastMessage,
             tagId?: number,
             toAll?: boolean
         ): Promise<resp.ISendBroadcastMessageResp>;
 
+        /**
+         * 群发消息预览【订阅号与服务号认证后均可用】
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+         * @param message
+         */
         preview(
             message: broadcast.BroadcastMessage,
             to?: { towxname?: string[]; touser?: string[] },
             filter?: { [key: string]: boolean | number }
         ): Promise<resp.IPreviewBroadcastMessageResp>;
 
+        /**
+         * 删除群发消息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+         * @param msgId
+         */
         delete(msgId: string, articleIndex?: number): Promise<resp.IWXCommonResp>;
 
-        status(msgId: string): Promise<resp.IGetBroadMessageResp>;
+        /**
+         * 获取群发消息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+         * @param msgId
+         */
+        stats(msgId: string): Promise<resp.IGetBroadMessageResp>;
 
         sendText(
             content: string,
@@ -638,16 +678,19 @@ declare namespace service {
     export interface CommentService {
         /**
          * 打开已群发文章评论
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         open(msgId: number, index?: number): Promise<string>;
 
         /**
          * 关闭已群发文章评论
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         close(msgId: number, index?: number): Promise<string>;
 
         /**
          * 查看指定文章的评论数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         list(
             msgId: number,
@@ -659,21 +702,25 @@ declare namespace service {
 
         /**
          * 将评论标记精选
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         markElect(msgId: number, index: number, commentId: number): Promise<string>;
 
         /**
          * 将评论取消精选
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         unmarkElect(msgId: number, index: number, commentId: number): Promise<string>;
 
         /**
          * 删除评论
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          */
         delete(msgId: number, index: number, commentId: number): Promise<string>;
 
         /**
          * 回复评论
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          * @param msgId 群发返回的msg_data_id
          * @param index 多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文
          * @param commentId 用户评论id
@@ -683,6 +730,7 @@ declare namespace service {
 
         /**
          * 删除回复
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1494572718_WzHIY
          * @param msgId 群发返回的msg_data_id
          * @param index 多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文
          * @param commentId 用户评论id
@@ -693,7 +741,7 @@ declare namespace service {
     /**
      * "kf" service
      */
-    export interface CustomerServiceService {
+    export interface KFService {
         /**
          * 获取客服列表
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
@@ -708,6 +756,7 @@ declare namespace service {
 
         /**
          * 添加客服帐号
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号，帐号前缀最多10个字符，必须是英文、数字字符或者下划线，后缀为公众号微信号，长度不超过30个字符
          * @param nickname 客服昵称，最长16个字
          */
@@ -715,6 +764,7 @@ declare namespace service {
 
         /**
          * 设置客服信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          * @param nickname 客服昵称，最长16个字
          */
@@ -722,12 +772,14 @@ declare namespace service {
 
         /**
          * 删除客服帐号
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          */
         delete(account: string): Promise<string>;
 
         /**
          * 邀请绑定客服帐号
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          * @param wechatId 接收绑定邀请的客服微信号
          */
@@ -735,6 +787,7 @@ declare namespace service {
 
         /**
          * 上传客服头像
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          * @param imagePath 图片路径
          */
@@ -742,6 +795,7 @@ declare namespace service {
 
         /**
          * 客服接口-发消息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param message 文本或BroadcastMessage子类实例
          * @param to 目标用户OpenId
          * @param kfAccount 以某个客服帐号来发消息(可选)
@@ -754,12 +808,14 @@ declare namespace service {
 
         /**
          * 客服输入状态
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param to 目标用户OpenId
          */
         sendTypingStatus(to: string): Promise<string>;
 
         /**
          * 获取聊天记录
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813
          * @param startTime 起始时间，unix时间戳
          * @param endTime 结束时间，unix时间戳，每次查询时段不能超过24小时
          * @param msgId 消息id顺序从小到大，从1开始
@@ -776,20 +832,23 @@ declare namespace service {
     /**
      * "kfsession" service
      */
-    export interface CustomerServiceSessionService {
+    export interface KFSessionService {
         /**
          * 获取客服会话列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          */
         list(account: string): Promise<resp.IGetKFSessionListResp>;
 
         /**
          * 获取未接入会话列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820
          */
         waitingList(): Promise<resp.IGetKFSessionWaitingListResp>;
 
         /**
          * 创建会话
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          * @param openId 粉丝的openid
          */
@@ -797,6 +856,7 @@ declare namespace service {
 
         /**
          * 关闭会话
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820
          * @param account 完整客服帐号，格式为：帐号前缀@公众号微信号
          * @param openId 粉丝的openid
          */
@@ -804,6 +864,7 @@ declare namespace service {
 
         /**
          * 获取客户会话状态
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820
          * @param openId 粉丝的openid
          */
         stats(openId: string): Promise<resp.IGetCustomerSessionResp>;
@@ -815,61 +876,73 @@ declare namespace service {
     export interface DataCubeService {
         /**
          * 获取用户增减数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141082
          */
         userSummary(from: string, to: string): Promise<resp.IGetUserSummaryResp>;
 
         /**
          * 获取累计用户数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141082
          */
         userCumulate(from: string, to: string): Promise<resp.IGetUserCumulateResp>;
 
         /**
          * 获取图文群发每日数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         articleSummary(from: string, to: string): Promise<resp.IGetArticleSummaryResp>;
 
         /**
          * 获取图文群发总数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         articleTotal(from: string, to: string): Promise<resp.IGetArticleTotalResp>;
 
         /**
          * 获取图文阅读统计数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         userReadSummary(from: string, to: string): Promise<resp.IGetReadSummaryResp>;
 
         /**
          * 获取图文阅读统计分时数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         userReadHourly(from: string, to: string): Promise<resp.IGetReadHourlyResp>;
 
         /**
          * 获取图文分享转发数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         userShareSummary(from: string, to: string): Promise<resp.IGetShareSummaryResp>;
 
         /**
          * 获取图文分享转发分时数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084
          */
         userShareHourly(from: string, to: string): Promise<resp.IGetShareHourlyResp>;
 
         /**
          * 获取消息发送概况数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageSummary(from: string, to: string): Promise<resp.IGetUpstreamMsgResp>;
 
         /**
          * 获取消息发送分时数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageHourly(from: string, to: string): Promise<resp.IGetUpstreamMsgHourlyResp>;
 
         /**
          * 获取消息发送周数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageWeekly(from: string, to: string): Promise<resp.IGetUpstreamMsgWeeklyResp>;
 
         /**
          * 获取消息发送月数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageMonthly(from: string, to: string): Promise<resp.IGetUpstreamMsgMonthResp>;
 
@@ -880,6 +953,7 @@ declare namespace service {
 
         /**
          * 获取消息发送分布周数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageDistWeekly(
             from: string,
@@ -888,6 +962,7 @@ declare namespace service {
 
         /**
          * 获取消息发送分布月数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085
          */
         upstreamMessageDistMonthly(
             from: string,
@@ -896,11 +971,13 @@ declare namespace service {
 
         /**
          * 获取接口分析数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141086
          */
         interfaceSummary(from: string, to: string): Promise<resp.IGetInterfaceSummaryResp>;
 
         /**
          * 获取接口分析分时数据
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141086
          */
         interfaceSummaryHourly(
             from: string,
@@ -909,6 +986,7 @@ declare namespace service {
 
         /**
          * 拉取卡券概况数据接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
          */
         cardSummary(
             from: string,
@@ -918,6 +996,7 @@ declare namespace service {
 
         /**
          * 获取免费券数据接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
          */
         freeCardSummary(
             from: string,
@@ -928,6 +1007,7 @@ declare namespace service {
 
         /**
          * 拉取会员卡数据接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
          * @param from
          * @param to
          * @param condSource 卡券来源，0为公众平台创建的卡券数据、1是API创建的卡券数据
@@ -940,6 +1020,7 @@ declare namespace service {
 
         /**
          * 拉取单张会员卡数据接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
          */
         memberCardDetail(
             from: string,
@@ -954,6 +1035,7 @@ declare namespace service {
     export interface DeviceService {
         /**
          * 第三方发送消息给设备主人的微信终端，并最终送达设备
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         message(
             deviceId: string,
@@ -963,6 +1045,7 @@ declare namespace service {
 
         /**
          * 第三方主动发送设备状态消息给微信终端
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         statMessage(
             deviceId: string,
@@ -973,26 +1056,31 @@ declare namespace service {
 
         /**
          * 获取设备绑定openID
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         openId(deviceId: string): Promise<resp.IDeviceGetOpenIdResp>;
 
         /**
          * 获取设备二维码
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         qrCode(deviceIds: string[]): Promise<resp.IDeviceGetQrCodeResp>;
 
         /**
          * 验证二维码
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         verifyQrCode(ticket: string): Promise<resp.IDeviceVerifyQrCodeResp>;
 
         /**
          * 获取 deviceid 和二维码
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         createId(productId: string): Promise<resp.IDeviceCreateIdResp>;
 
         /**
          * 设备授权
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         authorize(
             devices: resp.IDevice[],
@@ -1002,36 +1090,43 @@ declare namespace service {
 
         /**
          * 利用 deviceid 更新设备属性
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         update(devices: resp.IDevice[]): Promise<resp.IDeviceAuthResp>;
 
         /**
          * 设备状态查询
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         stat(deviceId: string): Promise<resp.IDeviceStatResp>;
 
         /**
          * 设备绑定成功通知
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         bind(openId: string, deviceId: string, ticket: string): Promise<resp.IDeviceBindResp>;
 
         /**
          * 设备解绑成功通知
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         unbind(openId: string, deviceId: string, ticket: string): Promise<resp.IDeviceBindResp>;
 
         /**
          * 强制绑定用户和设备
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         forceBind(openId: string, deviceId: string): Promise<resp.IDeviceForceBindResp>;
 
         /**
          * 强制解绑用户和设备
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         forceUnbind(openId: string, deviceId: string): Promise<resp.IDeviceForceUnbindResp>;
 
         /**
          * 通过openid获取用户绑定的设备
+         * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
         getBindDevice(openId: string): Promise<resp.IDeviceGetBindingResp>;
     }
@@ -1042,21 +1137,25 @@ declare namespace service {
     export interface MaterialService {
         /**
          * 上传图片永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadImage(path: string): Promise<resp.IUploadCommonResp>;
 
         /**
          * 上传语音永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadVoice(path: string): Promise<resp.IUploadCommonResp>;
 
         /**
          * 上传缩略图永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadThumb(path: string): Promise<resp.IUploadCommonResp>;
 
         /**
          * 上传视频永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadVideo(
             path: string,
@@ -1066,21 +1165,25 @@ declare namespace service {
 
         /**
          * 新增永久图文消息素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadArticle(articles: resp.IArticle[]): Promise<resp.IUploadNewsResp>;
 
         /**
          * 修改永久图文素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732
          */
         updateArticle(mediaId: string, article: resp.IArticle, index?: number): Promise<string>;
 
         /**
          * 上传图文消息内的图片获取URL
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729
          */
         uploadArticleImage<IUploadNewsImageResp>(path: string): Promise<resp.IUploadNewsImageResp>;
 
         /**
          * 获取永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738730
          */
         get(
             mediaId: string
@@ -1088,16 +1191,19 @@ declare namespace service {
 
         /**
          * 删除永久素材
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738731
          */
         delete(mediaId: string): Promise<resp.IDeleteMaterialResp>;
 
         /**
          * 获取素材列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738734
          */
         list(type: string, offset?: number, count?): Promise<resp.IGetMaterialListResp>;
 
         /**
          * 获取素材总数
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733
          */
         stats(): Promise<resp.IGetMaterialCountResp>;
     }
@@ -1108,36 +1214,43 @@ declare namespace service {
     export interface MenuService {
         /**
          * 查询自定义菜单的结构(包含默认菜单和个性化菜单)
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141014
          */
         list(): Promise<resp.IMenu>;
 
         /**
          * 获取当前自定义菜单配置
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1434698695
          */
         current(): Promise<resp.IMenuConfig>;
 
         /**
          * 创建自定义菜单
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013
          */
         create(buttons: resp.IMenuButton[]): Promise<string>;
 
         /**
          * 删除自定义菜单(会同时删除个性化菜单)
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141015
          */
         delete(): Promise<string>;
 
         /**
          * 创建个性化菜单
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296
          */
         createConditional(menu: resp.IConditionalMenu): Promise<string>;
 
         /**
          * 删除个性化菜单
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296
          */
         deleteConditional(menuId: string): Promise<string>;
 
         /**
          * 测试个性化菜单匹配结果
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296
          */
         tryMatch(userId: string): Promise<{ button: resp.IMenuButton[] }>;
     }
@@ -1148,31 +1261,37 @@ declare namespace service {
     export interface POIService {
         /**
          * 查询门店信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         getPOI(id: number): Promise<resp.IGetPOIResp>;
 
         /**
          * 查询门店列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         list(offset?: number, limit?: number): Promise<resp.IGetPOIListResp>;
 
         /**
          * 创建门店
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         create(poi: resp.ICreatePOIReq);
 
         /**
          * 修改门店服务信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         update(id: number, poi: resp.IUpdatePOIReq): Promise<string>;
 
         /**
          * 删除门店
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         delete(id: number): Promise<string>;
 
         /**
          * 获取门店类目表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120
          */
         categories(): Promise<resp.IGetPOICategoryListResp>;
     }
@@ -1208,6 +1327,9 @@ declare namespace service {
 
         /**
          * handle message from wechat server
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140841
          */
         handle(handler: (msg: message.Message) => Promise<string | message.Message | false>): void;
     }
@@ -1225,31 +1347,37 @@ declare namespace service {
     export interface TemplateMessageService {
         /**
          * 设置所属行业
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         setIndustry(primaryIndustry: string, secondaryIndustry: string): Promise<string>;
 
         /**
          * 获取设置的行业信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         getIndustry(): Promise<resp.IGetIndustryResp>;
 
         /**
          * 获得模板ID
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         addTemplate(shortId: string): Promise<resp.IAddTemplateResp>;
 
         /**
          * 获取模板列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         getPrivateTemplates(): Promise<resp.IGetTemplateListResp>;
 
         /**
          * 删除模板
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         deletePrivateTemplate(templateId: string): Promise<resp.IWXCommonResp>;
 
         /**
          * 发送模板消息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277
          */
         send(data: resp.ISendTemplateMessageReq): Promise<resp.ISendTemplateMessageResp>;
 
@@ -1266,16 +1394,19 @@ declare namespace service {
     export interface UserService {
         /**
          * 创建用户标签
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          */
         createTag(name: string): Promise<resp.ICreateTagResp>;
 
         /**
          * 获取用户标签列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          */
         getTags(): Promise<resp.IGetTagsResp>;
 
         /**
          * 编辑用户标签
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param tagId 标签ID
          * @param tagName 标签名称
          */
@@ -1283,12 +1414,14 @@ declare namespace service {
 
         /**
          * 删除用户标签
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param tagId 标签ID
          */
         deleteTag(tagId: number): Promise<string>;
 
         /**
          * 获取标签下粉丝列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param tagId 标签ID
          * @param nextOpenId 第一个拉取的OPENID，不填默认从头开始拉取
          */
@@ -1296,6 +1429,7 @@ declare namespace service {
 
         /**
          * 批量为用户打标签
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param tagId 标签ID
          * @param userList 用户列表(OpenId)
          */
@@ -1303,6 +1437,7 @@ declare namespace service {
 
         /**
          * 批量为用户取消标签
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param tagId 标签ID
          * @param userList 用户列表(OpenId)
          */
@@ -1310,12 +1445,14 @@ declare namespace service {
 
         /**
          * 获取用户身上的标签列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837
          * @param userId 用户ID(OpenId)
          */
         getUserTags(userId: string): Promise<resp.IGetUserTagsResp>;
 
         /**
          * 设置用户备注名(该接口暂时开放给微信认证的服务号)
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140838
          * @param userId 用户ID(OpenId)
          * @param remark 备注名
          */
@@ -1323,6 +1460,7 @@ declare namespace service {
 
         /**
          * 获取用户基本信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839
          * @param userId 用户ID(OpenId)
          * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
          */
@@ -1330,6 +1468,7 @@ declare namespace service {
 
         /**
          * 批量获取用户基本信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839
          * @param userList
          */
         batchGetInfo(
@@ -1338,24 +1477,28 @@ declare namespace service {
 
         /**
          * 获取用户列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840
          * @param nextOpenId 第一个拉取的OPENID，不填默认从头开始拉取
          */
         list(nextOpenId?: string): Promise<resp.IGetUserListResp>;
 
         /**
          * 获取黑名单用户列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840
          * @param nextOpenId 第一个拉取的OPENID，不填默认从头开始拉取
          */
         blacklist(nextOpenId?: string): Promise<resp.IGetUserBlackListResp>;
 
         /**
          * 拉黑用户
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840
          * @param userList 用户ID列表(OpenId)
          */
         drop(userList: string[]): Promise<string>;
 
         /**
          *  取消拉黑用户
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840
          * @param userList 用户ID列表(OpenId)
          */
         recover(userList: string[]): Promise<string>;
