@@ -169,3 +169,51 @@ export interface IConsumeCardCodeResp extends IWXCommonResp {
 export interface IDecryptCardCodeResp extends IWXCommonResp {
     code: string;
 }
+
+export interface IActiveCardCoinAccountResp extends IWXCommonResp {
+    reward: number;
+}
+
+export interface IGetCardCoinPayPriceResp extends IWXCommonResp {
+    order_id: string;
+    price: string;
+    free_coin: string;
+    pay_coin: string;
+}
+
+export interface IGetCardCoinSummaryInfoResp extends IWXCommonResp {
+    free_coin: number;
+    pay_coin: number;
+    total_coin: number;
+}
+
+export interface IChargeCardCoinResp extends IWXCommonResp {
+    order_id: string;
+    qrcode_url: string;
+    qrcode_buffer: string;
+}
+
+interface ICardCoinOrderInfo {
+    order_id: string;
+    status: string;
+    create_time: number;
+    pay_finish_time: number;
+    desc: string;
+    free_coin_count: string;
+    pay_coin_count: string;
+    refund_free_coin_count: string;
+    refund_pay_coin_count: string;
+    openid: string;
+    order_type: string;
+}
+
+export interface IGetCardCoinOrderResp extends IWXCommonResp {
+    order_info: ICardCoinOrderInfo;
+}
+
+export interface IGetCardCoinOrderListResp extends IWXCommonResp {
+    order_info: ICardCoinOrderInfo;
+    total_num: number;
+}
+
+export interface IConfirmCardCoinPriceResp extends IWXCommonResp {}
