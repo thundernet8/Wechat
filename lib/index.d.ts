@@ -33,6 +33,8 @@ declare namespace WechatOne {
         MessageType: enums.MessageType;
         MediaType: enums.MediaType;
         EventType: enums.EventType;
+        CardType: enums.CardType;
+        CardCodeType: enums.CardCodeType;
         BroadcastMessageType: enums.BroadcastMessageType;
     };
 
@@ -201,6 +203,47 @@ declare namespace enums {
         IMAGE = "image",
         MP_VIDEO = "mpvideo",
         WX_CARD = "wxcard"
+    }
+
+    export enum CardType {
+        // 团购券
+        GROUPON = "groupon",
+        // 折扣券
+        DISCOUNT = "discount",
+        // 礼品券
+        GIFT = "gift",
+        // 代金券
+        CASH = "cash",
+        // 通用券
+        GENERAL_COUPON = "general_coupon",
+        // 会员卡
+        MEMBER_CARD = "member_card",
+        // 景点门票
+        SCENIC_TICKET = "scenic_ticket",
+        // 电影票
+        MOVIE_TICKET = "movie_ticket",
+        // 飞机票
+        BOARDING_PASS = "boarding_pass",
+        // 会议门票
+        MEETING_TICKET = "meeting_ticket",
+        // 汽车票
+        BUS_TICKET = "bus_ticket"
+    }
+
+    // 卡券码型
+    export enum CardCodeType {
+        // 文本
+        CODE_TYPE_TEXT = "CODE_TYPE_TEXT",
+        // 一维码
+        CODE_TYPE_BARCODE = "CODE_TYPE_BARCODE",
+        // 二维码
+        CODE_TYPE_QRCODE = "CODE_TYPE_QRCODE",
+        // 二维码无code显示
+        CODE_TYPE_ONLY_QRCODE = "CODE_TYPE_ONLY_QRCODE",
+        // 一维码无code显示
+        CODE_TYPE_ONLY_BARCODE = "CODE_TYPE_ONLY_BARCODE",
+        // 不显示code和条形码类型
+        CODE_TYPE_NONE = "CODE_TYPE_NONE"
     }
 }
 
@@ -1330,6 +1373,7 @@ declare namespace service {
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140841
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025274
          */
         handle(handler: (msg: message.Message) => Promise<string | message.Message | false>): void;
     }

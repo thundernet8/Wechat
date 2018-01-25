@@ -2,6 +2,7 @@ import ServiceContainer from "../Core/ServiceContainer";
 import AutoReplyServiceProvider from "./AutoReply/ServiceProvider";
 import BaseServiceProvider from "./Base/ServiceProvider";
 import BroadcastServiceProvider from "./Broadcast/ServiceProvider";
+import CardServiceProvider from "./Card/ServiceProvider";
 import CommentServiceProvider from "./Comment/ServiceProvider";
 import DataCubeServiceProvider from "./DataCube/ServiceProvider";
 import DeviceServiceProvider from "./Device/ServiceProvider";
@@ -25,6 +26,7 @@ export default class Application extends ServiceContainer {
             AutoReplyServiceProvider,
             BaseServiceProvider,
             BroadcastServiceProvider,
+            CardServiceProvider,
             CommentServiceProvider,
             DataCubeServiceProvider,
             DeviceServiceProvider,
