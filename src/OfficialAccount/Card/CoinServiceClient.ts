@@ -5,8 +5,7 @@ import {
     IGetCardCoinSummaryInfoResp,
     IChargeCardCoinResp,
     IGetCardCoinOrderResp,
-    IGetCardCoinOrderListResp,
-    IConfirmCardCoinPriceResp
+    IGetCardCoinOrderListResp
 } from "../Interface/ICard";
 
 /**
@@ -94,6 +93,6 @@ export default class ServiceClient extends BaseServiceClient {
             quantity
         };
 
-        return this.httpPost<IConfirmCardCoinPriceResp>("/card/pay/confirm", data);
+        return this.httpPost<string>("/card/pay/confirm", data);
     }
 }

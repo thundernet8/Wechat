@@ -91,8 +91,6 @@ export interface IUpdateCardResp extends IWXCommonResp {
     send_check: boolean;
 }
 
-export interface IDeleteCardResp extends IWXCommonResp {}
-
 export interface IQrScanCardInfo {
     code: string;
     card_id?: string;
@@ -119,8 +117,6 @@ export interface IGetNewsBroadcastCardHtmlResp extends IWXCommonResp {
     content: string;
 }
 
-export interface ISetCardTestWhitelistResp extends IWXCommonResp {}
-
 export interface IGetUserCardListResp extends IWXCommonResp {
     card_list: {
         code: string;
@@ -128,12 +124,6 @@ export interface IGetUserCardListResp extends IWXCommonResp {
     }[];
     has_share_card: boolean;
 }
-
-export interface ISetCardPaycellResp extends IWXCommonResp {}
-
-export interface IModifyCardStockResp extends IWXCommonResp {}
-
-export interface IDepositCodeResp extends IWXCommonResp {}
 
 export interface IGetDepositCount extends IWXCommonResp {
     count: number;
@@ -154,10 +144,6 @@ export interface IGetCardCodeResp extends IWXCommonResp {
     can_consume?: boolean;
     user_card_status?: string;
 }
-
-export interface IUpdateCardCodeResp extends IWXCommonResp {}
-
-export interface IDisableCardCodeResp extends IWXCommonResp {}
 
 export interface IConsumeCardCodeResp extends IWXCommonResp {
     card: {
@@ -216,4 +202,81 @@ export interface IGetCardCoinOrderListResp extends IWXCommonResp {
     total_num: number;
 }
 
-export interface IConfirmCardCoinPriceResp extends IWXCommonResp {}
+export interface IUpdateGeneralCardUserReq {
+    code: string;
+    card_id: string;
+    background_pic_url?: string;
+    balance?: number;
+    record_balance?: string;
+    custom_field_value1?: string;
+    custom_field_value2?: string;
+    custom_field_value3?: string;
+    can_give_friend?: boolean;
+}
+
+export interface IUpdateGeneralCardUserResp extends IWXCommonResp {
+    result_bonus: number;
+    result_balance: number;
+    openid: string;
+}
+
+export interface IActivateMemberCardReq {
+    init_bonus: number;
+    init_bonus_record: string;
+    init_balance: number;
+    membership_number: string;
+    code: string;
+    card_id: string;
+    background_pic_url: string;
+    init_custom_field_value1: string;
+}
+
+export interface IGetMemberCardUserInfoResp extends IWXCommonResp {
+    openid: string;
+    nickname: string;
+    membership_number: string;
+    bonus: number;
+    sex: string;
+    user_info: {
+        common_field_list: [
+            {
+                name: string;
+                value: string;
+            }[]
+        ];
+        custom_field_list: [
+            {
+                name: string;
+                value: string;
+                value_list: string[];
+            }[]
+        ];
+    };
+    user_card_status: string;
+    has_active: boolean;
+}
+
+export interface IUpdateMemberCardUserInfoReq {
+    code: string;
+    card_id: string;
+    background_pic_url?: string;
+    record_bonus?: string;
+    bonus?: number;
+    add_bonus?: number;
+    balance?: number;
+    add_balance?: number;
+    record_balance?: string;
+    custom_field_value1?: string;
+    custom_field_value2?: string;
+    notify_optional?: {
+        is_notify_bonus: boolean;
+        is_notify_balance: boolean;
+        is_notify_custom_field1: boolean;
+    };
+}
+
+export interface IUpdateMemberCardUserInfoResp extends IWXCommonResp {
+    result_bonus: number;
+    result_balance: number;
+    openid: string;
+}

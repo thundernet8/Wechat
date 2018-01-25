@@ -5,15 +5,11 @@ import {
     IGetCardDetailResp,
     IGetCardListResp,
     IUpdateCardResp,
-    IDeleteCardResp,
     IQrScanCardInfo,
     IGetCardQrCodeResp,
     ICreateLandingPageResp,
     IGetNewsBroadcastCardHtmlResp,
-    ISetCardTestWhitelistResp,
-    IGetUserCardListResp,
-    ISetCardPaycellResp,
-    IModifyCardStockResp
+    IGetUserCardListResp
 } from "../Interface/ICard";
 import CardType from "../../Core/Enum/CardType";
 
@@ -113,7 +109,7 @@ export default class ServiceClient extends BaseServiceClient {
             card_id: cardId
         };
 
-        return this.httpPost<IDeleteCardResp>("/card/delete", data);
+        return this.httpPost<string>("/card/delete", data);
     }
 
     /**
@@ -199,7 +195,7 @@ export default class ServiceClient extends BaseServiceClient {
                   openid: openIds
               };
 
-        return this.httpPost<ISetCardTestWhitelistResp>("/card/testwhitelist/set", data);
+        return this.httpPost<string>("/card/testwhitelist/set", data);
     }
 
     /**
@@ -229,7 +225,7 @@ export default class ServiceClient extends BaseServiceClient {
             is_open: isOpen
         };
 
-        return this.httpPost<ISetCardPaycellResp>("/card/paycell/set", data);
+        return this.httpPost<string>("/card/paycell/set", data);
     }
 
     /**
@@ -266,6 +262,6 @@ export default class ServiceClient extends BaseServiceClient {
             )
         };
 
-        return this.httpPost<IModifyCardStockResp>("/card/modifystock", data);
+        return this.httpPost<string>("/card/modifystock", data);
     }
 }

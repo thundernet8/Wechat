@@ -1,11 +1,8 @@
 import BaseServiceClient from "../../Core/ServiceClient";
 import {
-    IDepositCodeResp,
     IGetDepositCount,
     ICheckCodeResp,
     IGetCardCodeResp,
-    IUpdateCardCodeResp,
-    IDisableCardCodeResp,
     IConsumeCardCodeResp,
     IDecryptCardCodeResp
 } from "../Interface/ICard";
@@ -27,7 +24,7 @@ export default class ServiceClient extends BaseServiceClient {
             code: codes
         };
 
-        return this.httpPost<IDepositCodeResp>("/card/code/deposit", data);
+        return this.httpPost<string>("/card/code/deposit", data);
     }
 
     /**
@@ -89,7 +86,7 @@ export default class ServiceClient extends BaseServiceClient {
             card_id: cardId
         };
 
-        return this.httpPost<IUpdateCardCodeResp>("/card/code/update", data);
+        return this.httpPost<string>("/card/code/update", data);
     }
 
     /**
@@ -105,7 +102,7 @@ export default class ServiceClient extends BaseServiceClient {
             reason
         };
 
-        return this.httpPost<IDisableCardCodeResp>("/card/code/unavailable", data);
+        return this.httpPost<string>("/card/code/unavailable", data);
     }
 
     /**
