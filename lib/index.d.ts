@@ -53,7 +53,7 @@ declare namespace WechatOne {
 
         interface CardService extends service.CardService {}
 
-        interface CodeCardService extends service.CodeCardService {}
+        interface CodeCardService extends service.CardCodeService {}
 
         interface CoinCardService extends service.CoinCardService {}
 
@@ -867,7 +867,7 @@ declare namespace service {
     /**
      * "card.code" service
      */
-    export interface CodeCardService {
+    export interface CardCodeService {
         /**
          * 导入自定义code
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
@@ -1024,7 +1024,7 @@ declare namespace service {
      */
     export interface MeetingCardService {
         /**
-         *  更新用户礼品卡信息
+         *  更新用户会议卡信息
          * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=215143440770UT7Y
          * @param params
          */
@@ -1551,7 +1551,7 @@ declare namespace service {
          * 设备状态查询
          * http://iot.weixin.qq.com/wiki/doc/both/%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%85%A5%E6%8E%A5%E5%8F%A3%E5%8D%8F%E8%AE%AEV2.3.2.pdf
          */
-        stat(deviceId: string): Promise<resp.IDeviceStatResp>;
+        stats(deviceId: string): Promise<resp.IDeviceStatResp>;
 
         /**
          * 设备绑定成功通知

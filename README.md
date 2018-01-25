@@ -29,7 +29,7 @@
     * [x] 评论管理
     * [x] 设备管理 (IoT)
     * [x] 门店管理
-    * [ ] 卡券管理
+    * [x] 卡券管理
     * [x] 自动回复 (查询自动回复规则)
     * [x] 群发消息（文本、图片、语音、视频、图文）
     * [x] 客服记录（查询客服记录，查看客服、查看在线客服）
@@ -412,7 +412,7 @@ deviceService.authorize(devices, productId, opType);
 // 利用 deviceid 更新设备属性
 deviceService.update(devices);
 // 设备状态查询
-deviceService.stat(deviceId);
+deviceService.stats(deviceId);
 // 设备绑定成功通知
 deviceService.bind(openId, deviceId, ticket);
 // 设备解绑成功通知
@@ -441,6 +441,128 @@ poiService.update(id, poi);
 poiService.delete(id);
 // 获取门店类目表
 poiService.categories();
+```
+
+* 卡券管理
+
+```typescript
+const cardService = wx.getService("card");
+// 获取卡券颜色列表
+cardService.colors();
+// 卡券开放类目查询接口
+cardService.categories();
+// 创建卡券
+cardService.create(cardType, attributes);
+// 查看卡券详情
+cardService.stats(cardId);
+// 批量查询卡券列表
+cardService.list(offset, count, statusList);
+// 更改卡券信息接口
+cardService.update(cardId, type, attributes);
+// 删除卡券接口
+cardService.delete(cardId);
+// 创建二维码
+cardService.createQrCode(cards);
+// 通过ticket换取二维码链接
+cardService.getQrCodeUrl(ticket);
+// 创建货架接口
+cardService.createLandingPage(banner, pageTitle, canShare, scene, cardList);
+// 图文消息群发卡券
+cardService.getHtml(cardId);
+// 设置测试白名单
+cardService.setTestWhitelist(openIds, isUsername?);
+// 获取用户已领取卡券
+cardService.getUserCards(openId, cardId?);
+// 设置买单接口
+cardService.setPayCell(cardId, isOpen?);
+// 增加卡券库存
+cardService.increaseStock(cardId, amount);
+// 减少卡券库存
+cardService.reduceStock(cardId, amount);
+```
+
+```typescript
+const cardCodeService = wx.getService("card.code");
+// 导入自定义code
+cardCodeService.deposit(cardId, codes);
+// 查询导入code数目
+cardCodeService.getDepositedCount(cardId);
+// 核查code
+cardCodeService.check(cardId, codes);
+// 查询Code接口
+cardCodeService.stats(code, cardId?, checkConsume?);
+// 更改Code接口
+cardCodeService.update(code, newCode, cardId?);
+// 设置卡券失效
+cardCodeService.disable(code, cardId?, reason?);
+// 核销Code
+cardCodeService.consume(code, cardId?);
+// Code解码
+cardCodeService.decrypt(encryptedCode);
+```
+
+```typescript
+const coinCardService = wx.getService("card.coin");
+// 开通券点账户
+coinCardService.active();
+// 对优惠券批价
+coinCardService.getPrice(cardId, quantity);
+// 查询券点余额
+coinCardService.summary();
+// 充值券点
+coinCardService.recharge(code);
+// 查询订单详情
+coinCardService.order(orderId);
+// 查询券点流水详情
+coinCardService.orders(filters);
+// 确认兑换库存
+coinCardService.confirm(cardId, orderId, quantity);
+```
+
+```typescript
+const generalCardService = wx.getService("card.general");
+// 通用卡接口激活
+generalCardService.active(info);
+// 通用卡撤销激活
+generalCardService.deactivate(cardId, code);
+// 更新用户礼品卡信息
+generalCardService.updateUser(params);
+```
+
+```typescript
+const meetingCardService = wx.getService("card.meeting");
+// 更新用户会议卡信息
+meetingCardService.updateUser(params);
+```
+
+```typescript
+const memberCardService = wx.getService("card.member");
+// 会员卡接口激活
+memberCardService.active(info);
+// 设置开卡字段
+memberCardService.setActivationForm(cardId, settings);
+// 拉取会员信息接口
+memberCardService.getUser(cardId, code);
+// 更新会员信息
+memberCardService.updateUser(params);
+```
+
+```typescript
+const movieCardService = wx.getService("card.movie");
+// 更新电影券会员信息
+movieCardService.updateUser(params);
+```
+
+```typescript
+const submerchantCardService = wx.getService("card.submerchant");
+// 创建子商户
+submerchantCardService.create(info);
+// 更新子商户
+submerchantCardService.update(merchantId, info);
+// 获取子商户信息
+submerchantCardService.stats(merchantId);
+// 批量获取子商户信息
+submerchantCardService.list(beginId?, limit?, status?);
 ```
 
 * 语义查询

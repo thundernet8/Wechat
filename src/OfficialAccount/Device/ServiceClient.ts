@@ -141,7 +141,7 @@ export default class ServiceClient extends BaseServiceClient {
      * 设备状态查询
      * @param deviceId
      */
-    public stat(deviceId: string) {
+    public stats(deviceId: string) {
         const params = {
             device_id: deviceId
         };
