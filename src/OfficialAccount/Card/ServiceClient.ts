@@ -46,7 +46,7 @@ export default class ServiceClient extends BaseServiceClient {
             }
         };
 
-        return this.httpPost("/card/create", data);
+        return this.httpPost<any>("/card/create", data);
     }
 
     /**

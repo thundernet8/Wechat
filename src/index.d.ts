@@ -53,6 +53,20 @@ declare namespace WechatOne {
 
         interface CardService extends service.CardService {}
 
+        interface CodeCardService extends service.CodeCardService {}
+
+        interface CoinCardService extends service.CoinCardService {}
+
+        interface GeneralCardService extends service.GeneralCardService {}
+
+        interface MeetingCardService extends service.MeetingCardService {}
+
+        interface MemberCardService extends service.MemberCardService {}
+
+        interface MovieCardService extends service.MovieCardService {}
+
+        interface SubMerchantCardService extends service.SubMerchantCardService {}
+
         interface CommentService extends service.CommentService {}
 
         interface KFService extends service.KFService {}
@@ -712,7 +726,403 @@ declare namespace service {
      * "card" service
      */
     export interface CardService {
-        // TODO
+        /**
+         * 获取卡券颜色列表
+         */
+        colors(): Promise<resp.IGetCardColorsResp>;
+
+        /**
+         * 卡券开放类目查询接口
+         */
+        categories(): Promise<resp.IGetCardCategoriesResp>;
+
+        /**
+         * 创建卡券
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025056
+         * @param cardType
+         * @param attributes
+         */
+        create(cardType: string | enums.CardType, attributes: { [key: string]: any }): Promise<any>;
+
+        /**
+         * 查看卡券详情
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param cardId
+         */
+        stats(cardId: string): Promise<resp.IGetCardDetailResp>;
+
+        /**
+         * 批量查询卡券列表
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param offset
+         * @param count
+         * @param statusList "CARD_STATUS_VERIFY_OK|CARD_STATUS_NOT_VERIFY|CARD_STATUS_VERIFY_FAIL|CARD_STATUS_DELETE|CARD_STATUS_DISPATCH"
+         */
+        list(
+            offset?: number,
+            count?: number,
+            statusList?: string[]
+        ): Promise<resp.IGetCardListResp>;
+
+        /**
+         * 更改卡券信息接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param cardId
+         * @param type WechatOne.Core.CardType
+         * @param attributes
+         */
+        update(
+            cardId: string,
+            type: string,
+            attributes: { [key: string]: any }
+        ): Promise<resp.IUpdateCardResp>;
+
+        /**
+         * 删除卡券接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param cardId
+         */
+        delete(cardId: string): Promise<string>;
+
+        /**
+         * 创建二维码
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param cards
+         */
+        createQrCode(
+            cards: resp.IQrScanCardInfo | resp.IQrScanCardInfo[]
+        ): Promise<resp.IGetCardQrCodeResp>;
+
+        /**
+         * 通过ticket换取二维码链接
+         * @param ticket
+         */
+        getQrCodeUrl(ticket: string): string;
+
+        /**
+         * 创建货架接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param banner 页面的banner图片链接，须调用，建议尺寸为640*300
+         * @param pageTitle 页面的title
+         * @param canShare 页面是否可以分享
+         * @param scene 投放页面的场景值； SCENE_NEAR_BY 附近 SCENE_MENU 自定义菜单 SCENE_QRCODE 二维码 SCENE_ARTICLE 公众号文章 SCENE_H5 h5页面 SCENE_IVR 自动回复 SCENE_CARD_CUSTOM_CELL 卡券自定义cell
+         * @param cardList 卡券列表，每个item有两个字段: 1.card_id-所要在页面投放的card_id 2.thumb_url-缩略图url
+         */
+        createLandingPage(
+            banner: string,
+            pageTitle: string,
+            canShare: boolean,
+            scene: string,
+            cardList: { card_id: string; thumb_url: string }[]
+        ): Promise<resp.ICreateLandingPageResp>;
+
+        /**
+         * 图文消息群发卡券
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param cardId
+         */
+        getHtml(cardId: string): Promise<resp.IGetNewsBroadcastCardHtmlResp>;
+
+        /**
+         * 设置测试白名单
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param openIds 用户的OpenId或用户名列表
+         * @param isUsername 是否提交的用户名
+         */
+        setTestWhitelist(openIds: string[], isUsername?: boolean): Promise<string>;
+
+        /**
+         * 获取用户已领取卡券
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param openId 需要查询的用户openid
+         * @param cardId 卡券ID。不填写时默认查询当前appid下的卡券
+         */
+        getUserCards(openId: string, cardId?: string): Promise<resp.IGetUserCardListResp>;
+
+        /**
+         * 设置买单接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025056
+         * @param cardId
+         * @param isOpen
+         */
+        setPayCell(cardId: string, isOpen?: boolean): Promise<string>;
+
+        /**
+         * 增加卡券库存
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param cardId
+         * @param amount
+         */
+        increaseStock(cardId: string, amount: number): Promise<string>;
+
+        /**
+         * 减少卡券库存
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param cardId
+         * @param amount
+         */
+        reduceStock(cardId: string, amount: number): Promise<string>;
+    }
+
+    /**
+     * "card.code" service
+     */
+    export interface CodeCardService {
+        /**
+         * 导入自定义code
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param cardId 需要进行导入code的卡券ID
+         * @param codes 需导入微信卡券后台的自定义code，上限为100个
+         */
+        deposit(cardId: string, codes: string[]): Promise<string>;
+
+        /**
+         * 查询导入code数目
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param cardId 进行导入code的卡券ID
+         */
+        getDepositedCount(cardId: string): Promise<resp.IGetDepositCount>;
+
+        /**
+         * 核查code
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062
+         * @param cardId 进行导入code的卡券ID
+         * @param codes 已经微信卡券后台的自定义code，上限为100个
+         */
+        check(cardId: string, codes: string[]): Promise<resp.ICheckCodeResp>;
+
+        /**
+         * 查询Code接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025239
+         * @param code 单张卡券的唯一标准
+         * @param cardId 卡券ID代表一类卡券。自定义code卡券必填
+         * @param checkConsume 是否校验code核销状态，填入true和false时的code异常状态返回数据不同
+         */
+        stats(
+            code: string,
+            cardId?: string,
+            checkConsume?: boolean
+        ): Promise<resp.IGetCardCodeResp>;
+
+        /**
+         * 更改Code接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param code 需变更的Code码
+         * @param newCode 变更后的有效Code码
+         * @param cardId 卡券ID。自定义Code码卡券为必填
+         */
+        update(code: string, newCode: string, cardId?: string): Promise<string>;
+
+        /**
+         * 设置卡券失效
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025272
+         * @param code 设置失效的Code码
+         * @param cardId 卡券ID
+         */
+        disable(code: string, cardId?: string, reason?: string): Promise<string>;
+
+        /**
+         * 核销Code
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025239
+         * @param code 需核销的Code码
+         * @param cardId 卡券ID。创建卡券时use_custom_code填写true时必填。非自定义Code不必填写
+         */
+        consume(code: string, cardId?: string): Promise<resp.IConsumeCardCodeResp>;
+
+        /**
+         * Code解码
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025239
+         * @param encryptedCode 经过加密的Code码
+         */
+        decrypt(encryptedCode: string): Promise<resp.IDecryptCardCodeResp>;
+    }
+
+    /**
+     * "card.coin" service
+     */
+    export interface CoinCardService {
+        /**
+         * 开通券点账户
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         */
+        active(): Promise<resp.IActiveCardCoinAccountResp>;
+
+        /**
+         * 对优惠券批价
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         * @param cardId 需要来配置库存的card_id
+         * @param quantity 本次需要兑换的库存数目
+         */
+        getPrice(cardId: string, quantity: number): Promise<resp.IGetCardCoinPayPriceResp>;
+
+        /**
+         * 查询券点余额
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         */
+        summary(): Promise<resp.IGetCardCoinSummaryInfoResp>;
+
+        /**
+         * 充值券点
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         * @param count 需要充值的券点数目，1点=1元
+         */
+        recharge(count: number): Promise<resp.IChargeCardCoinResp>;
+
+        /**
+         * 查询订单详情
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         * @param orderId 充值券点接口中获得的订单号，作为一次交易的唯一凭证
+         */
+        order(orderId: string): Promise<resp.IGetCardCoinOrderResp>;
+
+        /**
+         * 查询券点流水详情
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         * @param filters
+         */
+        orders(filters: { [key: string]: any }): Promise<resp.IGetCardCoinOrderListResp>;
+
+        /**
+         * 确认兑换库存
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481033345_5cGrc
+         * @param cardId 需要来兑换库存的card_id
+         * @param orderId 仅可以使用优惠券批价得到的订单号，保证批价有效性
+         * @param quantity 本次需要兑换的库存数目
+         */
+        confirm(cardId: string, orderId: string, quantity: number): Promise<string>;
+    }
+
+    /**
+     * "card.general" service
+     */
+    export interface GeneralCardService {
+        /**
+         * 通用卡接口激活
+         * @param info
+         */
+        active(info: { [key: string]: any }): Promise<any>;
+
+        /**
+         * 通用卡撤销激活
+         * @param cardId
+         * @param code
+         */
+        deactivate(cardId: string, code: string): Promise<any>;
+
+        /**
+         *  更新用户礼品卡信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=215143440770UT7Y
+         * @param params
+         */
+        updateUser(
+            params: resp.IUpdateGeneralCardUserReq
+        ): Promise<resp.IUpdateGeneralCardUserResp>;
+    }
+
+    /**
+     * "card.meeting" service
+     */
+    export interface MeetingCardService {
+        /**
+         *  更新用户礼品卡信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=215143440770UT7Y
+         * @param params
+         */
+        updateUser(
+            params: resp.IUpdateGeneralCardUserReq
+        ): Promise<resp.IUpdateGeneralCardUserResp>;
+    }
+
+    /**
+     * "card.member" service
+     */
+    export interface MemberCardService {
+        /**
+         * 会员卡接口激活
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025283
+         * @param info
+         */
+        active(info: resp.IActivateMemberCardReq): Promise<string>;
+
+        /**
+         * 设置开卡字段
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025283
+         * @param cardId
+         * @param settings
+         */
+        setActivationForm(cardId: string, settings: { [key: string]: any }): Promise<any>;
+
+        /**
+         * 拉取会员信息接口
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025283
+         * @param cardId
+         * @param code
+         */
+        getUser(cardId: string, code: string): Promise<resp.IGetMemberCardUserInfoResp>;
+
+        /**
+         *  更新会员信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025283
+         * @param params
+         */
+        updateUser(
+            params: resp.IUpdateMemberCardUserInfoReq
+        ): Promise<resp.IUpdateMemberCardUserInfoResp>;
+    }
+
+    /**
+     * "card.movie" service
+     */
+    export interface MovieCardService {
+        /**
+         *  更新电影券会员信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025288
+         * @param params
+         */
+        updateUser(params: resp.IUpdateMovieTicketUserInfoReq): Promise<string>;
+    }
+
+    /**
+     * "card.submerchant" service
+     */
+    export interface SubMerchantCardService {
+        /**
+         * 创建子商户
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025292
+         * @param info
+         */
+        create(info: resp.ICreateSubMerchantReq): Promise<resp.ICreateSubMerchantResp>;
+
+        /**
+         * 更新子商户
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025292
+         * @param merchantId
+         * @param info
+         */
+        update(
+            merchantId: number,
+            info: resp.IUpdateSubMerchantReq
+        ): Promise<resp.IUpdateSubMerchantResp>;
+
+        /**
+         * 获取子商户信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025292
+         * @param merchantId
+         */
+        stats(merchantId: number): Promise<resp.IGetSubMerchantResp>;
+
+        /**
+         * 批量获取子商户信息
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025292
+         * @param beginId 起始的子商户id，一个母商户公众号下唯一
+         * @param limit 拉取的子商户的个数，最大值为100
+         * @param status 子商户审核状态，填入后，只会拉出当前状态的子商户
+         */
+        list(
+            beginId?: number,
+            limit?: number,
+            status?: string
+        ): Promise<resp.IGetSubMerchantListResp>;
     }
 
     /**
@@ -2262,5 +2672,347 @@ declare namespace resp {
     export interface IGetCustomerSessionResp {
         createtime: number;
         kf_account: string;
+    }
+
+    // Card
+    export interface IGetCardColorsResp extends IWXCommonResp {
+        colors: {
+            name: string;
+            value: string;
+        }[];
+    }
+
+    export interface IGetCardCategoriesResp extends IWXCommonResp {
+        category: {
+            category_name: string;
+            primary_category_id: number;
+            secondary_category: {
+                can_choose_payment_card: number;
+                can_choose_prepaid_card: number;
+                category_name: string;
+                need_qualification_stuffs: string[];
+                secondary_category_id: number;
+            }[];
+        }[];
+    }
+
+    export interface IGetCardDetailResp extends IWXCommonResp {
+        card: {
+            card_type: CardType;
+            discount: {
+                base_info: {
+                    id: string;
+                    logo_url: string;
+                    code_type: CardCodeType;
+                    brand_name: string;
+                    title: string;
+                    date_info: {
+                        type: "DATE_TYPE_FIX_TIME_RANGE" | "DATE_TYPE_FIX_TERM";
+                        fixed_term: number;
+                        fixed_begin_term: number;
+                    };
+                    color: string;
+                    notice: string;
+                    description: string;
+                    location_id_list: number[];
+                    get_limit: number;
+                    can_share: boolean;
+                    can_give_friend: boolean;
+                    status:
+                        | "CARD_STATUS_VERIFY_OK"
+                        | "CARD_STATUS_NOT_VERIFY"
+                        | "CARD_STATUS_VERIFY_FAIL"
+                        | "CARD_STATUS_DELETE"
+                        | "CARD_STATUS_DISPATCH";
+                    sku: {
+                        quantity: number;
+                        total_quantity: number;
+                    };
+                    create_time: number;
+                    update_time: number;
+                    area_code_list: number[];
+                };
+                discount: number;
+                advanced_info: {
+                    time_limit: [
+                        {
+                            type: string;
+                        },
+                        {
+                            type: string;
+                        }
+                    ];
+                    text_image_list: string[];
+                    business_service: string[];
+                    consume_share_card_list: string[];
+                    abstract: {
+                        abstract: string;
+                        icon_url_list: string[];
+                    };
+                    share_friends: boolean;
+                };
+            };
+        };
+    }
+
+    export interface IGetCardListResp extends IWXCommonResp {
+        card_id_list: string[];
+        total_num: number;
+    }
+
+    export interface IUpdateCardResp extends IWXCommonResp {
+        send_check: boolean;
+    }
+
+    export interface IQrScanCardInfo {
+        code: string;
+        card_id?: string;
+        openid?: string;
+        expire_seconds?: number;
+        is_unique_code?: boolean;
+        outer_id?: number;
+        outer_str?: number;
+    }
+
+    export interface IGetCardQrCodeResp extends IWXCommonResp {
+        ticket: string;
+        expire_seconds: number;
+        url: string;
+        show_qrcode_url: string;
+    }
+
+    export interface ICreateLandingPageResp extends IWXCommonResp {
+        url: string;
+        page_id: number;
+    }
+
+    export interface IGetNewsBroadcastCardHtmlResp extends IWXCommonResp {
+        content: string;
+    }
+
+    export interface IGetUserCardListResp extends IWXCommonResp {
+        card_list: {
+            code: string;
+            card_id: string;
+        }[];
+        has_share_card: boolean;
+    }
+
+    export interface IGetDepositCount extends IWXCommonResp {
+        count: number;
+    }
+
+    export interface ICheckCodeResp extends IWXCommonResp {
+        exist_code: string[];
+        not_exist_code: string[];
+    }
+
+    export interface IGetCardCodeResp extends IWXCommonResp {
+        card?: {
+            card_id: string;
+            begin_time: number;
+            end_time: number;
+        };
+        openid?: string;
+        can_consume?: boolean;
+        user_card_status?: string;
+    }
+
+    export interface IConsumeCardCodeResp extends IWXCommonResp {
+        card: {
+            card_id: string;
+        };
+        openid: string;
+    }
+
+    export interface IDecryptCardCodeResp extends IWXCommonResp {
+        code: string;
+    }
+
+    export interface IActiveCardCoinAccountResp extends IWXCommonResp {
+        reward: number;
+    }
+
+    export interface IGetCardCoinPayPriceResp extends IWXCommonResp {
+        order_id: string;
+        price: string;
+        free_coin: string;
+        pay_coin: string;
+    }
+
+    export interface IGetCardCoinSummaryInfoResp extends IWXCommonResp {
+        free_coin: number;
+        pay_coin: number;
+        total_coin: number;
+    }
+
+    export interface IChargeCardCoinResp extends IWXCommonResp {
+        order_id: string;
+        qrcode_url: string;
+        qrcode_buffer: string;
+    }
+
+    interface ICardCoinOrderInfo {
+        order_id: string;
+        status: string;
+        create_time: number;
+        pay_finish_time: number;
+        desc: string;
+        free_coin_count: string;
+        pay_coin_count: string;
+        refund_free_coin_count: string;
+        refund_pay_coin_count: string;
+        openid: string;
+        order_type: string;
+    }
+
+    export interface IGetCardCoinOrderResp extends IWXCommonResp {
+        order_info: ICardCoinOrderInfo;
+    }
+
+    export interface IGetCardCoinOrderListResp extends IWXCommonResp {
+        order_info: ICardCoinOrderInfo;
+        total_num: number;
+    }
+
+    export interface IUpdateGeneralCardUserReq {
+        code: string;
+        card_id: string;
+        background_pic_url?: string;
+        balance?: number;
+        record_balance?: string;
+        custom_field_value1?: string;
+        custom_field_value2?: string;
+        custom_field_value3?: string;
+        can_give_friend?: boolean;
+    }
+
+    export interface IUpdateGeneralCardUserResp extends IWXCommonResp {
+        result_bonus: number;
+        result_balance: number;
+        openid: string;
+    }
+
+    export interface IActivateMemberCardReq {
+        init_bonus: number;
+        init_bonus_record: string;
+        init_balance: number;
+        membership_number: string;
+        code: string;
+        card_id: string;
+        background_pic_url: string;
+        init_custom_field_value1: string;
+    }
+
+    export interface IGetMemberCardUserInfoResp extends IWXCommonResp {
+        openid: string;
+        nickname: string;
+        membership_number: string;
+        bonus: number;
+        sex: string;
+        user_info: {
+            common_field_list: [
+                {
+                    name: string;
+                    value: string;
+                }[]
+            ];
+            custom_field_list: [
+                {
+                    name: string;
+                    value: string;
+                    value_list: string[];
+                }[]
+            ];
+        };
+        user_card_status: string;
+        has_active: boolean;
+    }
+
+    export interface IUpdateMemberCardUserInfoReq {
+        code: string;
+        card_id: string;
+        background_pic_url?: string;
+        record_bonus?: string;
+        bonus?: number;
+        add_bonus?: number;
+        balance?: number;
+        add_balance?: number;
+        record_balance?: string;
+        custom_field_value1?: string;
+        custom_field_value2?: string;
+        notify_optional?: {
+            is_notify_bonus: boolean;
+            is_notify_balance: boolean;
+            is_notify_custom_field1: boolean;
+        };
+    }
+
+    export interface IUpdateMemberCardUserInfoResp extends IWXCommonResp {
+        result_bonus: number;
+        result_balance: number;
+        openid: string;
+    }
+
+    export interface IUpdateMovieTicketUserInfoReq {
+        code: string;
+        card_id: string;
+        ticket_class: string;
+        show_time: number;
+        duration: number;
+        screening_room?: string;
+        seat_number?: string[];
+    }
+
+    export interface ICreateSubMerchantReq {
+        brand_name: string;
+        app_id?: string;
+        logo_url: string;
+        protocol: string;
+        agreement_media_id?: string;
+        operator_media_id?: string;
+        end_time: number;
+        primary_category_id: number;
+        secondary_category_id: number;
+    }
+
+    export interface ICreateSubMerchantResp {
+        info: {
+            merchant_id: number;
+            app_id: string;
+            create_time: number;
+            update_time: number;
+            brand_name: string;
+            logo_url: string;
+            status: string;
+            begin_time: number;
+            end_time: number;
+            primary_category_id: number;
+            secondary_category_id: number;
+        };
+    }
+
+    export interface IUpdateSubMerchantReq extends ICreateSubMerchantReq {
+        merchant_id: number;
+    }
+
+    export interface IUpdateSubMerchantResp extends ICreateSubMerchantResp {}
+
+    export interface IGetSubMerchantResp extends ICreateSubMerchantResp {}
+
+    export interface IGetSubMerchantListResp {
+        info_list: {
+            merchant_id: number;
+            create_time: number;
+            update_time: number;
+            brand_name: string;
+            logo_url: string;
+            status: string;
+            begin_time: number;
+            end_time: number;
+            primary_category_id: number;
+            secondary_category_id: number;
+        }[];
+        next_begin_id: number;
     }
 }
