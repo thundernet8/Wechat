@@ -280,3 +280,65 @@ export interface IUpdateMemberCardUserInfoResp extends IWXCommonResp {
     result_balance: number;
     openid: string;
 }
+
+export interface IUpdateMovieTicketUserInfoReq {
+    code: string;
+    card_id: string;
+    ticket_class: string;
+    show_time: number;
+    duration: number;
+    screening_room?: string;
+    seat_number?: string[];
+}
+
+export interface ICreateSubMerchantReq {
+    brand_name: string;
+    app_id?: string;
+    logo_url: string;
+    protocol: string;
+    agreement_media_id?: string;
+    operator_media_id?: string;
+    end_time: number;
+    primary_category_id: number;
+    secondary_category_id: number;
+}
+
+export interface ICreateSubMerchantResp {
+    info: {
+        merchant_id: number;
+        app_id: string;
+        create_time: number;
+        update_time: number;
+        brand_name: string;
+        logo_url: string;
+        status: string;
+        begin_time: number;
+        end_time: number;
+        primary_category_id: number;
+        secondary_category_id: number;
+    };
+}
+
+export interface IUpdateSubMerchantReq extends ICreateSubMerchantReq {
+    merchant_id: number;
+}
+
+export interface IUpdateSubMerchantResp extends ICreateSubMerchantResp {}
+
+export interface IGetSubMerchantResp extends ICreateSubMerchantResp {}
+
+export interface IGetSubMerchantListResp {
+    info_list: {
+        merchant_id: number;
+        create_time: number;
+        update_time: number;
+        brand_name: string;
+        logo_url: string;
+        status: string;
+        begin_time: number;
+        end_time: number;
+        primary_category_id: number;
+        secondary_category_id: number;
+    }[];
+    next_begin_id: number;
+}
