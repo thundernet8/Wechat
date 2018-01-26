@@ -81,6 +81,8 @@ declare namespace WechatOne {
 
         interface MenuService extends service.MenuService {}
 
+        interface OAuthService extends service.OAuthService {}
+
         interface POIService extends service.POIService {}
 
         interface SemanticService extends service.SemanticService {}
@@ -1709,6 +1711,46 @@ declare namespace service {
     }
 
     /**
+     * "oauth" service
+     */
+    export interface OAuthService {
+        /**
+         * OAuth第一步获取code的URI
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+         * @param redirect 授权后重定向的回调链接地址
+         * @param scope 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且， 即使在未关注的情况下，只要用户授权，也能获取其信息 ）
+         * @param state 重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节
+         */
+        grantCodeUri(
+            redirect: string,
+            scope: "snsapi_base" | "snsapi_userinfo",
+            state?: string
+        ): string;
+
+        /**
+         * OAuth第二步获取access_token的URI
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+         * @param code OAuth第一步获取的code参数
+         */
+        grantTokenUri(code: string): string;
+
+        /**
+         * 通过code换取access_token
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+         * @param code OAuth第一步获取的code参数
+         */
+        grantToken(code: string): Promise<resp.IOAuthAccessTokenResp>;
+
+        /**
+         * 拉取用户信息(需scope为 snsapi_userinfo，且调用grantToken成功之后调用)
+         * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+         * @param accessToken
+         * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+         */
+        grantUserInfo(lang?: string): Promise<resp.IOAuthUserInfo>;
+    }
+
+    /**
      * "poi" service
      */
     export interface POIService {
@@ -2698,12 +2740,12 @@ declare namespace resp {
 
     export interface IGetCardDetailResp extends IWXCommonResp {
         card: {
-            card_type: CardType;
+            card_type: enums.CardType;
             discount: {
                 base_info: {
                     id: string;
                     logo_url: string;
-                    code_type: CardCodeType;
+                    code_type: enums.CardCodeType;
                     brand_name: string;
                     title: string;
                     date_info: {
@@ -3014,5 +3056,26 @@ declare namespace resp {
             secondary_category_id: number;
         }[];
         next_begin_id: number;
+    }
+
+    // OAuth
+    export interface IOAuthAccessTokenResp {
+        access_token: string;
+        expires_in: number;
+        refresh_token: string;
+        openid: string;
+        scope: string;
+    }
+
+    export interface IOAuthUserInfo {
+        openid: string;
+        nickname: string;
+        sex: string;
+        province: string;
+        city: string;
+        country: string;
+        headimgurl: string;
+        privilege: string[];
+        unionid: string;
     }
 }
