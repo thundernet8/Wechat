@@ -62,8 +62,6 @@ export default class HttpClient {
             endpoint = "/" + endpoint;
         }
         return this._requestRaw(method, endpoint, params, headers).then(resp => {
-            // debug
-            console.log(`request ${endpoint} resp:`, resp.data);
             if (resp.status >= 400) {
                 throw new Error(resp.data);
             }

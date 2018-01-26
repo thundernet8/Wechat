@@ -37,9 +37,12 @@ export default class ServiceClient {
     private getAccessToken(): Promise<string> {
         return this._accessToken
             .getToken()
-            .then(accessToken => {
+            .then(resp => {
                 // TODO log
-                return accessToken;
+                if (!resp.access_token) {
+                    throw new Error("Get access token failed");
+                }
+                return resp.access_token;
             })
             .catch(error => {
                 // TODO log

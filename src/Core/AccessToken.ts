@@ -6,7 +6,11 @@ import ServiceContainer from "./ServiceContainer";
 export default abstract class AccessToken {
     protected app: ServiceContainer;
 
-    private TOKEN_CACHE_KEY: string = "_wechat_one_access_token";
+    protected TOKEN_CACHE_KEY: string = "_wechat_one_access_token";
+
+    protected extInfo: { [key: string]: string | number };
+
+    protected originalToken: IAccessTokenResp;
 
     /**
      * Memory cache store(if no cacher provided)
@@ -19,12 +23,20 @@ export default abstract class AccessToken {
         this.app = container;
     }
 
+    protected getStore() {
+        return AccessToken.store;
+    }
+
+    protected setStore(store) {
+        AccessToken.store = store;
+    }
+
     private setCache(data) {
         if (this.app.cacher) {
             this.app.cacher.setter(this.TOKEN_CACHE_KEY, JSON.stringify(data));
             return;
         }
-        AccessToken.store = data;
+        this.setStore(data);
     }
 
     private getCache() {
@@ -32,22 +44,29 @@ export default abstract class AccessToken {
             const cache = this.app.cacher.getter(this.TOKEN_CACHE_KEY);
             return cache ? JSON.parse(cache) : null;
         }
-        return AccessToken.store;
+        return this.getStore();
     }
 
-    public setToken(token: string, expires: number) {
+    public setToken(token: string, expires: number, originalToken: IAccessTokenResp) {
         const data = Object.assign({}, AccessToken.store, {
             token,
-            expires: Date.now() + expires * 1000
+            expires: Date.now() + expires * 1000,
+            originalToken
         });
         this.setCache(data);
     }
 
-    public getToken(fresh: boolean = false): Promise<string> {
+    public getToken(
+        fresh: boolean = false,
+        extInfo?: { [key: string]: string | number }
+    ): Promise<IAccessTokenResp> {
+        this.extInfo = extInfo as any;
+
         const data = this.getCache() || {};
-        const { token, expires } = data;
+        const { token, expires, originalToken } = data;
         if (!fresh && token && expires - Date.now() >= 10 * 60 * 1000) {
-            return Promise.resolve(token);
+            this.originalToken = originalToken;
+            return Promise.resolve(originalToken);
         }
 
         const endpoint = this.getEndpoint();
@@ -66,16 +85,16 @@ export default abstract class AccessToken {
 
         return httpClient.httpGet<IAccessTokenResp>(endpoint, credentials).then(resp => {
             if (resp.access_token && resp.expires_in) {
-                console.log(`${new Date().toISOString()}: Get access token ${resp.access_token}`);
-                this.setToken(resp.access_token, resp.expires_in);
-                return resp.access_token;
+                this.setToken(resp.access_token, resp.expires_in, resp);
+                this.originalToken = resp;
+                return resp;
             }
             throw new Error(resp.errmsg);
         });
     }
 
-    public getFreshToken() {
-        return this.getToken(true);
+    public getFreshToken(extInfo?: { [key: string]: string | number }) {
+        return this.getToken(true, extInfo);
     }
 
     protected abstract getEndpoint(): string;
