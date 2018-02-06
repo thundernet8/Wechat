@@ -1,6 +1,6 @@
 {
     "name": "wechat-one",
-    "version": "0.1.5",
+    "version": "0.2.0",
     "description": "Easy to use Wechat SDK for Node",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
