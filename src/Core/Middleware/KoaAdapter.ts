@@ -1,7 +1,7 @@
 import validate from "./Validate";
 import ServiceContainer from "../ServiceContainer";
 import * as xmlParser from "koa-xml-body";
-import * as koaRoute from "koa-route";
+import * as koaRoute from "koa-router";
 
 export default function koaMiddleware(
     path: string | null,
@@ -32,18 +32,15 @@ export default function koaMiddleware(
                     throw error;
                 }
             } else {
-                if (typeof next === "function") {
-                    return next();
-                }
-                ctx.status = 200;
-                ctx.body = "";
+                return next();
             }
         }
     };
 
     koa.use(xmlParser());
     if (path) {
-        koa.use(koaRoute.all(path, wxMiddleware));
+        koaRoute.all(path, wxMiddleware);
+        koa.use(koaRoute.routes()).use(koaRoute.allowedMethods());
     } else {
         koa.use(wxMiddleware);
     }

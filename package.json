@@ -43,7 +43,7 @@
         "axios": "^0.17.1",
         "express-xml-bodyparser": "^0.3.0",
         "formstream": "^1.1.0",
-        "koa-route": "^3.2.0",
+        "koa-router": "^7.4.0",
         "koa-xml-body": "^2.0.0",
         "lodash-template": "^1.0.0",
         "moment": "^2.20.1"
