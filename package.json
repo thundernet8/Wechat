@@ -7,27 +7,18 @@
     "repository": "git@github.com:thundernet8/Wechat.git",
     "author": "WuXueqian <wuxueqian2010@hotmail.com>",
     "license": "MIT",
-    "keywords": [
-        "wechat",
-        "wechat-sdk",
-        "weixin",
-        "weixin-sdk",
-        "nodejs",
-        "koa",
-        "express"
-    ],
+    "keywords": ["wechat", "wechat-sdk", "weixin", "weixin-sdk", "nodejs", "koa", "express"],
     "scripts": {
         "build": "rimraf lib && tsc && cp src/index.d.ts lib/",
         "prepublish": "npm run build",
         "lint": "npm run lint:ts",
         "lint:ts": "tslint -e node_modules typings -c .tslintrc.json src/**/*.tsx",
         "lint-staged": "lint-staged",
-        "lint-staged:ts": "tslint --fix -c .tslintrc.json"
+        "lint-staged:ts": "tslint --fix -c .tslintrc.json",
+        "format": "prettier --write"
     },
     "lint-staged": {
-        "src/**/*.{ts,tsx}": [
-            "lint-staged:ts"
-        ]
+        "src/**/*.{ts,tsx}": ["format", "lint-staged:ts", "git add"]
     },
     "pre-commit": "lint-staged",
     "devDependencies": {
