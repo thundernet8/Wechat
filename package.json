@@ -10,7 +10,7 @@
     "keywords": ["wechat", "wechat-sdk", "weixin", "weixin-sdk", "nodejs", "koa", "express"],
     "scripts": {
         "build": "rimraf lib && tsc && cp src/index.d.ts lib/",
-        "prepublish": "npm run build",
+        "prepublishOnly": "npm run build",
         "lint": "npm run lint:ts",
         "lint:ts": "tslint -e node_modules typings -c .tslintrc.json src/**/*.tsx",
         "lint-staged": "lint-staged",
